@@ -44,7 +44,7 @@
     "https": "^1.0.0",
     "is-port-reachable": "^4.0.0",
     "jquery": "^3.6.3",
-    "jsbarcode": "^3.11.5",
+    "jsbarcode": "^3.12.3",
     "jspdf": "^4.2.1",
     "lodash": "^4.17.24",
     "macaddress": "^0.5.3",
