@@ -1,41 +1,58 @@
 # Troubleshooting
 
-## Development install fails
+## Development Install Fails
 
-Confirm `node --version` reports Node.js 24.x and `npm --version` reports npm 11.x. From the repository root, run `npm ci`. If a previous dependency folder is corrupted, remove only `node_modules` and rerun `npm ci`; do not remove `%APPDATA%\PharmaSpot`.
+Confirm `node --version` reports Node.js 24.x and `npm --version` reports npm 11.x. From the repository root, run `npm ci`. If a previous dependency folder is corrupted, remove only `node_modules` and rerun `npm ci`; do not touch `%APPDATA%\PharmaSpot`.
 
-## `node:sqlite` cannot be found
+## `node:sqlite` Cannot be Found
 
-The backend uses Node's built-in SQLite module. Older Node.js versions do not provide the required API. Install current Node.js 24 x64. The packaged application uses Electron's bundled runtime and does not need system Node.js.
+The backend uses Node's native built-in SQLite engine (`node:sqlite`). Older Node.js versions (e.g., Node 18 or 20) do not provide the required `DatabaseSync` API. Install **Node.js 24 x64**. Packaged desktop applications use Electron's bundled runtime and do not require system Node.js.
 
-## Electron opens no window
+## Electron Opens No Window
 
-Run `npm start` from a PowerShell terminal and keep the error output. Check for an orphan `Multi Medicos.exe`/Electron process and whether endpoint protection quarantined application files. The API listens only on loopback; an explicitly assigned test `PORT` that is already occupied causes startup to fail.
+Run `npm start` from a PowerShell terminal to inspect startup logs.
+- Terminate any orphaned `electron.exe` or `Multi Medicos.exe` processes via Task Manager or `Stop-Process -Name electron -Force`.
+- Check whether antivirus software quarantined project binaries.
+- If an explicit `PORT` was set and is already occupied, clear the environment variable or choose an open port.
 
-## Owner setup or login is unexpected
+## Owner Setup or Login Screen is Unexpected
 
-A fresh profile shows **Create Owner Account** and requires a password of at least 12 characters. If a login screen appears with an existing username, the Windows profile already has Multi Medicos/PharmaSpot data. Do not guess credentials or delete the folder. Back up the data and contact the maintainer.
+A fresh database displays **Create Owner Account** and requires a password of at least 12 characters. If a standard login screen appears with a pre-existing username, your Windows profile already contains existing Multi Medicos / PharmaSpot data. Do not guess credentials or delete the folder without taking a backup first.
 
-## SQLite initialization fails
+## SQLite Initialization Fails
 
-Verify that the Windows user can write to `%APPDATA%\PharmaSpot`, that the disk has free space, and that another process is not locking the database. Never copy only a live `.sqlite` file while the application is running in WAL mode; use the in-app backup command.
+Verify that the Windows user account has full read/write permissions for `%APPDATA%\PharmaSpot`, that the disk has sufficient free space, and that no external SQLite browser has locked `pharmacy.sqlite`. Never manually copy a live `.sqlite` file while the application is active in WAL mode; use the in-app **File → Backup** feature.
 
-## Existing data is missing after an update
+## Existing Data Missing After an Update
 
-Close the application and check whether Windows launched it under a different user account. The expected folder is `%APPDATA%\PharmaSpot`. Do not create replacement records, move folders, or run restore repeatedly until the paths and latest backup are identified.
+Close the application and verify whether Windows launched it under a different Windows user profile. The default data path is `%APPDATA%\PharmaSpot`. Check whether a prior backup exists before attempting reinstallation.
 
-## Backup or restore fails
+## Backup or Restore Fails
 
-Use **File → Backup** while the application is running normally and select a writable destination outside the live data folder. Restore accepts backups produced by Multi Medicos, validates checksums/database integrity, and applies them on restart. Preserve any `PharmaSpot-before-restore-*` directory until the restored data has been checked.
+- **Backup:** Use **File → Backup** while the application is running normally and select a writable destination outside the live data folder (e.g., an external drive).
+- **Restore:** Multi Medicos verifies archive structure and SQLite database integrity before staging the restore. On application restart, the existing data is moved to a safety folder named `PharmaSpot-before-restore-*` beside your data folder. Keep this folder until restored records are verified.
 
-## Windows packaging fails
+## Financial Reports / Cost Data Return Permission Denied
 
-Use Windows 10/11 x64, Node.js 24, `npm ci`, then `npm run make:win`. Check free disk space and antivirus history. Generated files belong in `out/` and should not be committed.
+Viewing product purchase costs, supplier invoice histories, and the Profit & Loss report requires financial permissions. Standard cashier accounts without `perm_transactions` cannot access `/api/reports/profit-loss`. Log in as the Owner account (`user_id = 1`) or grant transaction permissions to the cashier profile.
 
-## Installer or SmartScreen warning
+## Pack Sizes Show Incorrect Values
 
-The 1.5.5 private installer is unsigned. Windows may show an unknown-publisher warning. Obtain the installer from the official release, compare its SHA-256 checksum with the published release notes, and follow organization policy. Do not disable Windows security.
+Ensure that the unit hierarchy is configured logically:
+- A medicine's `units_per_box` must be greater than or equal to `units_per_strip`.
+- Example: If a box has 10 strips and each strip has 10 tablets, enter `10` for Strips/Box and `10` for Units/Strip (Units/Box becomes `100` automatically).
+- When entering a purchase, verify whether you selected **Box** or **Strip** in the Purchase Unit dropdown.
 
-## Reporting a problem safely
+## Theme Toggle Does Not Switch Colors
 
-Include reproduction steps, expected/actual results, Windows and application versions, sanitized logs, and sanitized screenshots. Never upload `pharmacy.sqlite`, WAL/SHM files, backups, passwords, tokens, customer information, or financial records.
+Theme preferences are persisted in `electron-store`. If the theme appears stuck, click the moon/sun icon in the top navigation bar (`#theme-toggle`) or restart the application. Dark mode applies WCAG 2.1 AA contrast styles across all views while strictly keeping receipt previews pure white.
+
+## Installer or SmartScreen Warning
+
+The 1.5.5 installer is unsigned. Windows SmartScreen may show an unknown-publisher warning. Obtain the installer from the official release page, compare its SHA-256 checksum with published release notes, click **More info**, and select **Run anyway**. Do not disable Windows security.
+
+## Reporting an Issue Safely
+
+When reporting an issue on GitHub:
+- Include reproduction steps, expected vs. actual behavior, Windows version, and sanitized logs.
+- **Never upload live `pharmacy.sqlite` files, backups, customer phone numbers, supplier records, or financial statements.**
