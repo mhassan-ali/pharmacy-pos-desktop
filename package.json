@@ -50,7 +50,7 @@
     "macaddress": "^0.5.3",
     "moment": "^2.31.0",
     "multer": "^2.4.0",
-    "notiflix": "^3.2.5",
+    "notiflix": "^3.3.0",
     "print-js": "^1.6.0",
     "sanitize": "^2.1.2",
     "sanitize-filename": "^1.6.3",
