@@ -1,0 +1,1737 @@
+/* =====================================================================
+   MULTI MEDICOS - UNIVERSAL THEME STYLESHEET
+   Light & Dark Theme with CSS Variables Root Pattern
+   High-contrast WCAG 2.1 AA compliant across all views & modals
+   Receipts and print views strictly preserved as white/black
+   ===================================================================== */
+
+/* =====================================================================
+   1. CSS VARIABLES: LIGHT THEME (DEFAULT)
+   ===================================================================== */
+:root {
+  /* Surfaces */
+  --bg-app: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f8fafc;
+  --bg-surface-3: #f1f5f9;
+  --bg-surface-active: #e2e8f0;
+
+  /* Inputs */
+  --bg-input: #ffffff;
+  --bg-input-disabled: #f8fafc;
+  --bg-input-addon: #f1f5f9;
+
+  /* Typography */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-disabled: #94a3b8;
+  --text-inverse: #ffffff;
+
+  /* Borders */
+  --border: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --border-strong: #cbd5e1;
+  --border-focus: #2563eb;
+
+  /* Brand & Actions */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-text: #ffffff;
+
+  /* Semantic status colors (light mode) */
+  --success-bg: #dcfce7;
+  --success-text: #14532d;
+  --success-border: #86efac;
+
+  --warning-bg: #fef3c7;
+  --warning-text: #78350f;
+  --warning-border: #fde68a;
+
+  --danger-bg: #fee2e2;
+  --danger-text: #7f1d1d;
+  --danger-border: #fca5a5;
+
+  --info-bg: #e0f2fe;
+  --info-text: #0c4a6e;
+  --info-border: #7dd3fc;
+}
+
+/* =====================================================================
+   2. CSS VARIABLES: DARK THEME
+   ===================================================================== */
+html.theme-dark,
+body.theme-dark {
+  /* Surfaces */
+  --bg-app: #090d16;
+  --bg-surface: #151d2e;
+  --bg-surface-2: #1a2337;
+  --bg-surface-3: #222d44;
+  --bg-surface-active: #2b3954;
+
+  /* Inputs */
+  --bg-input: #0c121e;
+  --bg-input-disabled: #182030;
+  --bg-input-addon: #1a2337;
+
+  /* Typography (All WCAG AA >= 4.5:1 on dark surfaces) */
+  --text-primary: #f8fafc;     /* 15.2:1 contrast on #151d2e */
+  --text-secondary: #e2e8f0;   /* 12.5:1 contrast on #151d2e */
+  --text-muted: #94a3b8;       /* 5.5:1 contrast on #151d2e */
+  --text-disabled: #64748b;    /* 3.2:1 contrast for disabled elements */
+  --text-inverse: #090d16;
+
+  /* Borders */
+  --border: #2e3c54;
+  --border-subtle: #222d44;
+  --border-strong: #405273;
+  --border-focus: #38bdf8;
+
+  /* Brand & Actions */
+  --accent: #38bdf8;
+  --accent-hover: #0284c7;
+  --accent-text: #090d16;
+
+  /* Semantic status colors (High contrast on dark surfaces) */
+  --success-bg: #064e3b;
+  --success-text: #6ee7b7;     /* 8.5:1 contrast on #064e3b */
+  --success-border: #059669;
+
+  --warning-bg: #451a03;
+  --warning-text: #fde68a;     /* 9.4:1 contrast on #451a03 */
+  --warning-border: #d97706;
+
+  --danger-bg: #450a0a;
+  --danger-text: #fca5a5;      /* 7.6:1 contrast on #450a0a */
+  --danger-border: #dc2626;
+
+  --info-bg: #082f49;
+  --info-text: #7dd3fc;        /* 8.8:1 contrast on #082f49 */
+  --info-border: #0284c7;
+}
+
+/* =====================================================================
+   3. GLOBAL DARK THEME BASE STYLES
+   ===================================================================== */
+html.theme-dark,
+body.theme-dark {
+  background-color: var(--bg-app) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #main_app {
+  background-color: var(--bg-app) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Base typography */
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark h3,
+body.theme-dark h4,
+body.theme-dark h5,
+body.theme-dark h6,
+body.theme-dark strong,
+body.theme-dark b {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark p,
+body.theme-dark span,
+body.theme-dark label,
+body.theme-dark div {
+  color: inherit;
+}
+
+.text-muted,
+small.text-muted,
+.cart-item-category,
+.discount-rupee-preview,
+.tax-info-tag {
+  color: var(--text-muted) !important;
+}
+
+.summary-total-value {
+  color: #047857 !important;
+}
+
+.btn-pos-pay {
+  background: #047857 !important;
+  border-color: #065f46 !important;
+  color: #ffffff !important;
+}
+.btn-pos-pay:hover {
+  background: #065f46 !important;
+}
+
+.product-category-badge {
+  background-color: #0369a1 !important;
+  color: #ffffff !important;
+}
+
+.product-card-price {
+  color: #065f46 !important;
+}
+
+body.theme-dark small,
+body.theme-dark .text-muted {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark a {
+  color: var(--accent) !important;
+}
+body.theme-dark a:hover,
+body.theme-dark a:focus {
+  color: #7dd3fc !important;
+}
+
+body.theme-dark hr {
+  border-top-color: var(--border) !important;
+  border-bottom: none !important;
+}
+
+/* =====================================================================
+   4. NAVIGATION & HEADER BAR
+   ===================================================================== */
+body.theme-dark .enterprise-nav {
+  background-color: var(--bg-surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.theme-dark .enterprise-nav .nav-tab {
+  color: var(--text-muted) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+body.theme-dark .enterprise-nav .nav-tab:hover {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-surface-3) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .enterprise-nav .nav-tab.active {
+  color: var(--accent) !important;
+  background-color: var(--bg-surface) !important;
+  border-bottom: 2px solid var(--accent) !important;
+  border-color: var(--border) var(--border) transparent var(--border) !important;
+}
+
+body.theme-dark .top-action-bar {
+  background: transparent !important;
+}
+
+/* Buttons */
+body.theme-dark .btn-default {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+body.theme-dark .btn-default:hover,
+body.theme-dark .btn-default:focus {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+  border-color: var(--border-focus) !important;
+}
+
+body.theme-dark .btn-light {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+body.theme-dark .btn-light:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+  border-color: var(--border-strong) !important;
+}
+
+body.theme-dark .btn-primary {
+  background-color: #1d4ed8 !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-primary:hover,
+body.theme-dark .btn-primary:focus {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-success {
+  background-color: #047857 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-success:hover,
+body.theme-dark .btn-success:focus {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-warning {
+  background-color: #b45309 !important;
+  border-color: #d97706 !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-warning:hover,
+body.theme-dark .btn-warning:focus {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-danger {
+  background-color: #b91c1c !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-danger:hover,
+body.theme-dark .btn-danger:focus {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-info {
+  background-color: #0369a1 !important;
+  border-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-info:hover,
+body.theme-dark .btn-info:focus {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .top-action-bar .btn {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+body.theme-dark .top-action-bar .btn:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+}
+body.theme-dark .top-action-bar .btn i,
+body.theme-dark .top-action-bar .btn .glyphicon {
+  color: var(--accent) !important;
+}
+body.theme-dark .top-action-bar .btn-warning {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--warning-text) !important;
+  border-color: var(--warning-border) !important;
+}
+body.theme-dark .top-action-bar .btn-info {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--info-text) !important;
+  border-color: var(--info-border) !important;
+}
+body.theme-dark #log-out {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--danger-text) !important;
+  border-color: var(--danger-border) !important;
+}
+
+/* =====================================================================
+   5. POINT OF SALE (POS) - LEFT PANEL, CART, TOTALS, ACTIONS
+   ===================================================================== */
+
+/* High-specificity override for #pos_view left panel cards */
+body.theme-dark #pos_view .card-box,
+body.theme-dark #pos_view #card-box,
+body.theme-dark #cartTable .card-box {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Search barcode & customer selector row */
+body.theme-dark #pos_view .input-group .form-control {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #pos_view #search,
+body.theme-dark #pos_view #categories {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .search-barcode-btn {
+  background-color: var(--bg-surface-2) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Chosen Dropdown plugin styling */
+body.theme-dark .chosen-container-single .chosen-single {
+  background-color: var(--bg-input) !important;
+  background-image: none !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+body.theme-dark .chosen-container-single .chosen-single span {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .chosen-container-single .chosen-single div b {
+  filter: invert(1);
+}
+
+body.theme-dark .chosen-container .chosen-drop {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.theme-dark .chosen-container .chosen-search input[type="text"] {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .chosen-container .chosen-results li {
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .chosen-container .chosen-results li.highlighted {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Customer Khata Badge */
+body.theme-dark #customer_khata_badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 3px;
+}
+body.theme-dark #customer_khata_badge.khata-due,
+body.theme-dark #customer_khata_badge:not(.khata-clear) {
+  background: var(--warning-bg) !important;
+  color: var(--warning-text) !important;
+  border: 1px solid var(--warning-border) !important;
+}
+body.theme-dark #customer_khata_badge.khata-clear {
+  background: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border: 1px solid var(--success-border) !important;
+}
+
+/* Cart Table Header & Body */
+body.theme-dark #cartTable .card-title {
+  background-color: var(--bg-surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark #cartTable .card-title strong {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #cartTable .card-body {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #cartTable .card-body .row {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 5px;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #cartTable .card-body .row > div:first-child {
+  color: var(--text-muted) !important;
+  font-weight: 700;
+}
+
+body.theme-dark .cart-item-name {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+body.theme-dark .cart-item-category {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark #cartTable input.form-control {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  text-align: center;
+}
+
+body.theme-dark #cartTable .btn-light {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .empty-cart-message {
+  color: var(--text-muted) !important;
+}
+body.theme-dark .empty-cart-message div {
+  color: var(--text-secondary) !important;
+}
+body.theme-dark .empty-cart-message small {
+  color: var(--text-muted) !important;
+}
+
+/* POS Summary Card & Totals Footer */
+body.theme-dark .pos-summary-card {
+  background: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .summary-label {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .summary-value {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .summary-total-value {
+  color: #34d399 !important; /* 8.2:1 contrast on #1a2337 */
+}
+
+body.theme-dark .tax-info-tag {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .discount-rupee-preview {
+  color: var(--text-muted) !important;
+}
+
+/* POS Action Buttons */
+body.theme-dark .btn-pos-print {
+  background: var(--bg-surface-2) !important;
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+}
+body.theme-dark .btn-pos-print:hover {
+  background: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-pos-cancel {
+  background: var(--danger-bg) !important;
+  border: 1px solid var(--danger-border) !important;
+  color: var(--danger-text) !important;
+}
+body.theme-dark .btn-pos-cancel:hover {
+  background: #5c0f0f !important;
+  color: #fecaca !important;
+}
+
+body.theme-dark .btn-pos-hold {
+  background: var(--warning-bg) !important;
+  border: 1px solid var(--warning-border) !important;
+  color: var(--warning-text) !important;
+}
+body.theme-dark .btn-pos-hold:hover {
+  background: #5c2406 !important;
+  color: #fef08a !important;
+}
+
+body.theme-dark .btn-pos-pay {
+  background: #047857 !important; /* 5.05:1 contrast with white text */
+  border: 1px solid #059669 !important;
+  color: #ffffff !important;
+}
+body.theme-dark .btn-pos-pay:hover {
+  background: #059669 !important;
+}
+
+/* =====================================================================
+   6. POS PRODUCT CARDS GRID
+   ===================================================================== */
+body.theme-dark #parent .box,
+body.theme-dark .product-card-item {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.theme-dark #parent .box:hover,
+body.theme-dark .product-card-item:hover {
+  border-color: var(--accent) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25) !important;
+}
+
+body.theme-dark .product-card-name {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .product-card-sku {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .product-category-badge {
+  background-color: #1e3a5f !important;
+  color: #93c5fd !important;
+  border: 1px solid #2563eb !important;
+}
+
+body.theme-dark .product-card-price {
+  background-color: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border: 1px solid var(--success-border) !important;
+}
+
+body.theme-dark .stock-badge-success {
+  background-color: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border: 1px solid var(--success-border) !important;
+}
+
+body.theme-dark .stock-badge-warning {
+  background-color: var(--warning-bg) !important;
+  color: var(--warning-text) !important;
+  border: 1px solid var(--warning-border) !important;
+}
+
+body.theme-dark .stock-badge-danger {
+  background-color: var(--danger-bg) !important;
+  color: var(--danger-text) !important;
+  border: 1px solid var(--danger-border) !important;
+}
+
+/* =====================================================================
+   7. FORM CONTROLS, INPUTS & MODALS
+   ===================================================================== */
+body.theme-dark .form-control,
+body.theme-dark select.form-control,
+body.theme-dark textarea.form-control,
+body.theme-dark .input-group-addon {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .input-group-addon {
+  background-color: var(--bg-input-addon) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .form-control:focus {
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25) !important;
+}
+
+body.theme-dark .form-control[readonly],
+body.theme-dark .form-control[disabled] {
+  background-color: var(--bg-input-disabled) !important;
+  color: var(--text-disabled) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+body.theme-dark .form-control::placeholder,
+body.theme-dark input::placeholder,
+body.theme-dark textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Date picker calendar icon & Range Picker */
+body.theme-dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85);
+}
+
+body.theme-dark #reportrange {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark #reportrange span {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #reportrange i {
+  color: var(--accent) !important;
+}
+
+body.theme-dark .daterangepicker {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.theme-dark .daterangepicker .calendar-table {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .daterangepicker td,
+body.theme-dark .daterangepicker th {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .daterangepicker td.off,
+body.theme-dark .daterangepicker td.off.in-range,
+body.theme-dark .daterangepicker td.off.start-date,
+body.theme-dark .daterangepicker td.off.end-date {
+  background-color: var(--bg-app) !important;
+  color: var(--text-disabled) !important;
+}
+
+body.theme-dark .daterangepicker td.in-range {
+  background-color: var(--bg-surface-3) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .daterangepicker td.active,
+body.theme-dark .daterangepicker td.active:hover {
+  background-color: var(--accent) !important;
+  color: var(--text-inverse) !important;
+}
+
+body.theme-dark .daterangepicker .ranges li {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .daterangepicker .ranges li:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .daterangepicker .ranges li.active {
+  background-color: var(--accent) !important;
+  color: var(--text-inverse) !important;
+}
+
+/* Modals */
+body.theme-dark .modal-content {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.theme-dark .modal-header {
+  background-color: var(--bg-surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.theme-dark .modal-footer {
+  background-color: var(--bg-surface-2) !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+body.theme-dark .modal-title {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .close {
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+  text-shadow: none !important;
+}
+body.theme-dark .close:hover {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+
+/* Batch Edit Section inside Batches Modal */
+body.theme-dark #batchEditSection {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #batchModalProductTitle {
+  color: var(--accent) !important;
+}
+
+/* Payment Modal List Group & Keypad */
+body.theme-dark .list-group-item {
+  background-color: var(--bg-surface-2) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .list-group-item:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .list-group-item.active,
+body.theme-dark .list-group-item.active:hover {
+  background-color: #1d4ed8 !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .keypad-btn {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+body.theme-dark .keypad-btn:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+  border-color: var(--border-focus) !important;
+}
+
+body.theme-dark #creditNotice {
+  color: var(--success-text) !important;
+}
+
+/* =====================================================================
+   8. TABLES & DATATABLES
+   ===================================================================== */
+body.theme-dark table,
+body.theme-dark .table,
+body.theme-dark .table-bordered,
+body.theme-dark table.dataTable {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark table th,
+body.theme-dark .table th,
+body.theme-dark table.dataTable thead th {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark table td,
+body.theme-dark .table td,
+body.theme-dark table.dataTable tbody td {
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .table-striped > tbody > tr:nth-of-type(odd),
+body.theme-dark table.dataTable.stripe tbody tr.odd,
+body.theme-dark table.dataTable.display tbody tr.odd {
+  background-color: var(--bg-surface-2) !important;
+}
+
+body.theme-dark .table-hover tbody tr:hover,
+body.theme-dark table.dataTable.hover tbody tr:hover {
+  background-color: var(--bg-surface-active) !important;
+}
+
+body.theme-dark .dataTables_wrapper,
+body.theme-dark .dataTables_info,
+body.theme-dark .dataTables_length,
+body.theme-dark .dataTables_filter {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .dataTables_empty {
+  color: var(--text-muted) !important;
+  background-color: var(--bg-surface) !important;
+}
+
+body.theme-dark .dataTables_filter input,
+body.theme-dark .dataTables_length select {
+  background-color: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+body.theme-dark .dataTables_paginate .paginate_button {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.theme-dark .dataTables_paginate .paginate_button:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: #ffffff !important;
+  border-color: var(--border-strong) !important;
+}
+
+body.theme-dark .dataTables_paginate .paginate_button.current,
+body.theme-dark .dataTables_paginate .paginate_button.current:hover {
+  background-color: var(--accent) !important;
+  color: var(--text-inverse) !important;
+  border-color: var(--accent) !important;
+}
+
+body.theme-dark .dataTables_paginate .paginate_button.disabled,
+body.theme-dark .dataTables_paginate .paginate_button.disabled:hover {
+  color: var(--text-disabled) !important;
+  background-color: var(--bg-input-disabled) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* =====================================================================
+   9. ENTERPRISE VIEWS, CARDS & STATEMENTS
+   ===================================================================== */
+body.theme-dark .enterprise-view {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-app) !important;
+}
+
+body.theme-dark .enterprise-card,
+body.theme-dark .enterprise-view .enterprise-card,
+body.theme-dark .card-box,
+body.theme-dark .panel,
+body.theme-dark .well,
+body.theme-dark .metric-card,
+body.theme-dark .statement-box {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.theme-dark .card-header-flex {
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.theme-dark .card-header-flex h3 {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .enterprise-table {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .enterprise-table th {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 2px solid var(--border) !important;
+}
+
+body.theme-dark .enterprise-table td {
+  color: var(--text-secondary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.theme-dark .enterprise-table tr:hover td {
+  background-color: var(--bg-surface-active) !important;
+}
+
+body.theme-dark .search-input-group input {
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .search-input-group i {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .bg-white {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Transactions view counters */
+body.theme-dark #totals .bg-success {
+  background-color: #064e3b !important;
+  border: 1px solid #059669 !important;
+  color: #6ee7b7 !important;
+}
+body.theme-dark #totals .bg-success h5,
+body.theme-dark #totals .bg-success span {
+  color: #6ee7b7 !important;
+}
+
+body.theme-dark #totals .bg-warning {
+  background-color: #451a03 !important;
+  border: 1px solid #d97706 !important;
+  color: #fde68a !important;
+}
+body.theme-dark #totals .bg-warning h5,
+body.theme-dark #totals .bg-warning span {
+  color: #fde68a !important;
+}
+
+body.theme-dark #totals .bg-info {
+  background-color: #082f49 !important;
+  border: 1px solid #0284c7 !important;
+  color: #7dd3fc !important;
+}
+body.theme-dark #totals .bg-info h5,
+body.theme-dark #totals .bg-info span {
+  color: #7dd3fc !important;
+}
+
+body.theme-dark .panel-default > .panel-heading {
+  background-color: var(--bg-surface-2) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .metric-value,
+body.theme-dark .statement-title {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .metric-sub {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .statement-balance-box {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Enterprise status badges */
+body.theme-dark .badge-paid {
+  background: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border: 1px solid var(--success-border) !important;
+}
+
+body.theme-dark .badge-unpaid {
+  background: var(--danger-bg) !important;
+  color: var(--danger-text) !important;
+  border: 1px solid var(--danger-border) !important;
+}
+
+body.theme-dark .badge-partially_paid {
+  background: var(--warning-bg) !important;
+  color: var(--warning-text) !important;
+  border: 1px solid var(--warning-border) !important;
+}
+
+body.theme-dark .badge-draft,
+body.theme-dark .badge-cancelled {
+  background: var(--bg-surface-3) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.theme-dark .badge-received {
+  background: var(--info-bg) !important;
+  color: var(--info-text) !important;
+  border: 1px solid var(--info-border) !important;
+}
+
+/* Nav Tabs inside Enterprise Views */
+body.theme-dark .nav-tabs {
+  border-bottom-color: var(--border) !important;
+}
+
+body.theme-dark .nav-tabs > li > a {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-muted) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .nav-tabs > li > a:hover {
+  background-color: var(--bg-surface-3) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .nav-tabs > li.active > a,
+body.theme-dark .nav-tabs > li.active > a:hover,
+body.theme-dark .nav-tabs > li.active > a:focus {
+  background-color: var(--bg-surface) !important;
+  color: var(--accent) !important;
+  border-color: var(--border) var(--border) transparent var(--border) !important;
+}
+
+body.theme-dark .tab-content {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-top: none !important;
+  color: var(--text-primary) !important;
+}
+
+/* =====================================================================
+   9B. ENTERPRISE PURCHASE MODAL, CARDS & WORKFLOWS
+   High-contrast overrides for dark mode
+   ===================================================================== */
+body.theme-dark .modal-enterprise .modal-content {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7) !important;
+}
+
+body.theme-dark .modal-enterprise .modal-header {
+  background-color: var(--bg-surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .modal-enterprise .modal-title,
+body.theme-dark .modal-enterprise .modal-title i,
+body.theme-dark .modal-enterprise .modal-title span {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .modal-enterprise .close {
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+  text-shadow: none !important;
+}
+
+body.theme-dark .modal-enterprise .close:hover {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .modal-enterprise .modal-body {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .modal-enterprise .modal-footer {
+  background-color: var(--bg-surface-2) !important;
+  border-top: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Product Pack Form Dark Theme */
+body.theme-dark .sold-type-toggle > .btn.btn-default {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-strong) !important;
+}
+body.theme-dark .sold-type-toggle > .btn.btn-default.active {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+body.theme-dark .btn-reset-auto {
+  color: #38bdf8 !important;
+}
+body.theme-dark .btn-reset-auto:hover {
+  color: #7dd3fc !important;
+}
+body.theme-dark .quick-strip-calc-hint,
+body.theme-dark .quick-box-calc-hint,
+body.theme-dark .prod-strip-calc-hint,
+body.theme-dark .prod-box-calc-hint {
+  color: #94a3b8 !important;
+}
+
+/* Purchase Modal & Sections */
+body.theme-dark .purchase-modal-body {
+  background-color: var(--bg-app) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-section {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.theme-dark .purchase-section-heading > span {
+  background-color: var(--accent) !important;
+  color: var(--accent-text) !important;
+}
+
+body.theme-dark .purchase-section-heading strong {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-section-heading small {
+  color: var(--text-muted) !important;
+}
+
+/* Purchase Search Autocomplete */
+body.theme-dark .purchase-search-results {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.theme-dark .purchase-search-option {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.theme-dark .purchase-search-option:hover,
+body.theme-dark .purchase-search-option:focus {
+  background-color: var(--bg-surface-3) !important;
+  color: var(--text-primary) !important;
+  outline: none !important;
+}
+
+body.theme-dark .purchase-search-option strong {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-search-option small {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .purchase-search-no-results {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .purchase-empty-state {
+  border-color: var(--border) !important;
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .purchase-empty-state .fa {
+  color: var(--accent) !important;
+}
+
+body.theme-dark .purchase-empty-state strong {
+  color: var(--text-secondary) !important;
+}
+
+/* Medicine Item Cards */
+body.theme-dark .purchase-item-card {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 4px solid var(--accent) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.theme-dark .purchase-item-card-header strong {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-item-card-header .text-muted {
+  color: var(--text-muted) !important;
+}
+
+body.theme-dark .purchase-item-fields label {
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .purchase-line-total {
+  background-color: var(--bg-surface-3) !important;
+  border: 1px solid var(--border) !important;
+  color: #34d399 !important;
+}
+
+body.theme-dark .purchase-line-total .pur-item-linetotal {
+  color: #34d399 !important;
+}
+
+/* Summary Section */
+body.theme-dark .purchase-summary-section {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.theme-dark .purchase-summary-row {
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-summary-row span {
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .purchase-summary-row strong,
+body.theme-dark #pur_grand_total,
+body.theme-dark #pur_summary_paid {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .purchase-summary-balance,
+body.theme-dark .purchase-summary-balance strong,
+body.theme-dark #pur_summary_remaining {
+  color: #f87171 !important;
+}
+
+body.theme-dark .purchase-summary-section > small {
+  color: var(--text-muted) !important;
+}
+
+/* Supplier additional details & toggles */
+body.theme-dark .supplier-advanced-toggle,
+body.theme-dark .purchase-inline-action,
+body.theme-dark .purchase-add-another {
+  color: var(--accent) !important;
+}
+
+body.theme-dark .supplier-additional-details {
+  background-color: var(--bg-surface-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .supplier-additional-details label {
+  color: var(--text-secondary) !important;
+}
+
+/* Quick Medicine modal note */
+body.theme-dark .quick-medicine-note {
+  background-color: var(--info-bg) !important;
+  color: var(--info-text) !important;
+  border: 1px solid var(--info-border) !important;
+}
+
+/* View Purchase Modal Table */
+body.theme-dark #modal_view_purchase .bg-light,
+body.theme-dark #modal_supplier_payment .bg-light {
+  background-color: var(--bg-surface-2) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #modal_view_purchase .table-bordered,
+body.theme-dark #modal_supplier_payment .table-bordered {
+  border-color: var(--border) !important;
+}
+
+body.theme-dark #modal_view_purchase .table-bordered th,
+body.theme-dark #modal_view_purchase .table-bordered td,
+body.theme-dark #modal_supplier_payment .table-bordered th,
+body.theme-dark #modal_supplier_payment .table-bordered td {
+  border-color: var(--border) !important;
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark #vpur_items_tbody tr:hover td {
+  background-color: var(--bg-surface-active) !important;
+}
+
+/* =====================================================================
+   10. ALERTS & NOTIFLIX OVERRIDES
+   ===================================================================== */
+body.theme-dark .alert {
+  border-radius: 6px;
+}
+
+body.theme-dark .alert-info {
+  background-color: var(--info-bg) !important;
+  color: var(--info-text) !important;
+  border: 1px solid var(--info-border) !important;
+}
+
+body.theme-dark .alert-warning {
+  background-color: var(--warning-bg) !important;
+  color: var(--warning-text) !important;
+  border: 1px solid var(--warning-border) !important;
+}
+
+body.theme-dark .alert-danger {
+  background-color: var(--danger-bg) !important;
+  color: var(--danger-text) !important;
+  border: 1px solid var(--danger-border) !important;
+}
+
+body.theme-dark .alert-success {
+  background-color: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border: 1px solid var(--success-border) !important;
+}
+
+/* Notiflix popups */
+body.theme-dark [id^="NotiflixReportWrap"] > div,
+body.theme-dark [id^="NotiflixConfirmWrap"] > div {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8) !important;
+}
+
+body.theme-dark [id^="NotiflixReportWrap"] h5,
+body.theme-dark [id^="NotiflixConfirmWrap"] h5 {
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark [id^="NotiflixReportWrap"] p,
+body.theme-dark [id^="NotiflixConfirmWrap"] p {
+  color: var(--text-secondary) !important;
+}
+
+/* =====================================================================
+   11. LOGIN & OWNER SETUP SCREEN
+   ===================================================================== */
+body.theme-dark #login {
+  background-color: var(--bg-app) !important;
+}
+
+body.theme-dark .login-box-body {
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.theme-dark .login-box-msg {
+  color: var(--text-secondary) !important;
+}
+
+/* =====================================================================
+   12. SCROLLBARS
+   ===================================================================== */
+body.theme-dark ::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+body.theme-dark ::-webkit-scrollbar-track {
+  background-color: var(--bg-app);
+}
+
+body.theme-dark ::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: 4px;
+}
+
+body.theme-dark ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+}
+
+/* =====================================================================
+   13. PRINT & RECEIPT PREVIEW PROTECTION: STRICTLY LIGHT (WHITE & BLACK)
+   Receipts and print preview must NEVER be inverted, dark, or striped.
+   ===================================================================== */
+
+/* 1. Modal wrapper & Content */
+#orderModal .modal-content,
+body.theme-dark #orderModal .modal-content,
+.receipt-sheet,
+.receipt-modal-content {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 2. Modal Header (Top strip: Print button & Close X) */
+#orderModal .modal-header,
+body.theme-dark #orderModal .modal-header,
+.receipt-modal-header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  padding: 10px 15px !important;
+}
+
+#orderModal .modal-header .btn-success,
+body.theme-dark #orderModal .modal-header .btn-success,
+.btn-receipt-print {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 5px 14px !important;
+  display: inline-block !important;
+}
+
+#orderModal .modal-header .btn-success:hover,
+body.theme-dark #orderModal .modal-header .btn-success:hover,
+.btn-receipt-print:hover {
+  background-color: #166534 !important;
+  border-color: #166534 !important;
+  color: #ffffff !important;
+}
+
+#orderModal .modal-header .close,
+body.theme-dark #orderModal .modal-header .close,
+.receipt-modal-close {
+  color: #0f172a !important;
+  opacity: 0.75 !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+  float: right !important;
+}
+
+#orderModal .modal-header .close:hover,
+body.theme-dark #orderModal .modal-header .close:hover,
+.receipt-modal-close:hover {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
+
+/* 3. Modal Body & Receipt Document Root */
+#orderModal .modal-body,
+body.theme-dark #orderModal .modal-body,
+#viewTransaction,
+body.theme-dark #viewTransaction,
+#invoice-pos,
+body.theme-dark #invoice-pos,
+.receipt-document-root,
+.receipt-sheet,
+.receipt,
+.printable {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* 4. Complete Receipt Document Reset for all descendants inside the receipt */
+#orderModal #viewTransaction *,
+body.theme-dark #orderModal #viewTransaction *,
+#viewTransaction *,
+body.theme-dark #viewTransaction *,
+#invoice-pos *,
+body.theme-dark #invoice-pos *,
+.receipt-document-root *,
+body.theme-dark .receipt-document-root *,
+.receipt-sheet:not(.alert) *,
+body.theme-dark .receipt-sheet:not(.alert) * {
+  color: #000000 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* 5. Item subtitle / category tag inside receipt */
+#orderModal #viewTransaction small,
+body.theme-dark #orderModal #viewTransaction small,
+#viewTransaction small,
+body.theme-dark #viewTransaction small,
+#invoice-pos small,
+body.theme-dark #invoice-pos small,
+.receipt-document-root small,
+body.theme-dark .receipt-document-root small {
+  color: #333333 !important;
+  background-color: transparent !important;
+}
+
+/* 6. High-specificity Reset for Tables inside Receipt */
+#orderModal table,
+body.theme-dark #orderModal table,
+#orderModal .table,
+body.theme-dark #orderModal .table,
+#viewTransaction table,
+body.theme-dark #viewTransaction table,
+#viewTransaction .table,
+body.theme-dark #viewTransaction .table,
+#invoice-pos table,
+body.theme-dark #invoice-pos table,
+.receipt-document-root table,
+body.theme-dark .receipt-document-root table {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #dddddd !important;
+  border-collapse: collapse !important;
+}
+
+#orderModal table thead,
+#orderModal table tbody,
+#orderModal table tfoot,
+#orderModal table tr,
+#orderModal table th,
+#orderModal table td,
+body.theme-dark #orderModal table thead,
+body.theme-dark #orderModal table tbody,
+body.theme-dark #orderModal table tfoot,
+body.theme-dark #orderModal table tr,
+body.theme-dark #orderModal table th,
+body.theme-dark #orderModal table td,
+#viewTransaction table thead,
+#viewTransaction table tbody,
+#viewTransaction table tfoot,
+#viewTransaction table tr,
+#viewTransaction table th,
+#viewTransaction table td,
+body.theme-dark #viewTransaction table thead,
+body.theme-dark #viewTransaction table tbody,
+body.theme-dark #viewTransaction table tfoot,
+body.theme-dark #viewTransaction table tr,
+body.theme-dark #viewTransaction table th,
+body.theme-dark #viewTransaction table td,
+#invoice-pos table thead,
+#invoice-pos table tbody,
+#invoice-pos table tfoot,
+#invoice-pos table tr,
+#invoice-pos table th,
+#invoice-pos table td,
+body.theme-dark #invoice-pos table thead,
+body.theme-dark #invoice-pos table tbody,
+body.theme-dark #invoice-pos table tfoot,
+body.theme-dark #invoice-pos table tr,
+body.theme-dark #invoice-pos table th,
+body.theme-dark #invoice-pos table td,
+.receipt-document-root table thead,
+.receipt-document-root table tbody,
+.receipt-document-root table tfoot,
+.receipt-document-root table tr,
+.receipt-document-root table th,
+.receipt-document-root table td,
+body.theme-dark .receipt-document-root table thead,
+body.theme-dark .receipt-document-root table tbody,
+body.theme-dark .receipt-document-root table tfoot,
+body.theme-dark .receipt-document-root table tr,
+body.theme-dark .receipt-document-root table th,
+body.theme-dark .receipt-document-root table td {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #dddddd !important;
+  box-shadow: none !important;
+}
+
+/* 7. Disable hover or zebra striping inside receipt tables */
+#orderModal table tr:hover,
+#orderModal table tr:hover td,
+#orderModal table tr:nth-of-type(odd),
+#orderModal table tr:nth-of-type(even),
+body.theme-dark #orderModal table tr:hover,
+body.theme-dark #orderModal table tr:hover td,
+body.theme-dark #orderModal table tr:nth-of-type(odd),
+body.theme-dark #orderModal table tr:nth-of-type(even),
+#viewTransaction table tr:hover,
+#viewTransaction table tr:hover td,
+#viewTransaction table tr:nth-of-type(odd),
+#viewTransaction table tr:nth-of-type(even),
+body.theme-dark #viewTransaction table tr:hover,
+body.theme-dark #viewTransaction table tr:hover td,
+body.theme-dark #viewTransaction table tr:nth-of-type(odd),
+body.theme-dark #viewTransaction table tr:nth-of-type(even),
+#invoice-pos table tr:hover,
+#invoice-pos table tr:hover td,
+#invoice-pos table tr:nth-of-type(odd),
+#invoice-pos table tr:nth-of-type(even),
+body.theme-dark #invoice-pos table tr:hover,
+body.theme-dark #invoice-pos table tr:hover td,
+body.theme-dark #invoice-pos table tr:nth-of-type(odd),
+body.theme-dark #invoice-pos table tr:nth-of-type(even),
+.receipt-document-root table tr:hover,
+.receipt-document-root table tr:hover td,
+.receipt-document-root table tr:nth-of-type(odd),
+.receipt-document-root table tr:nth-of-type(even),
+body.theme-dark .receipt-document-root table tr:hover,
+body.theme-dark .receipt-document-root table tr:hover td,
+body.theme-dark .receipt-document-root table tr:nth-of-type(odd),
+body.theme-dark .receipt-document-root table tr:nth-of-type(even) {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* 8. Separators inside receipt */
+#orderModal hr,
+body.theme-dark #orderModal hr,
+#viewTransaction hr,
+body.theme-dark #viewTransaction hr,
+#invoice-pos hr,
+body.theme-dark #invoice-pos hr,
+.receipt-document-root hr,
+body.theme-dark .receipt-document-root hr {
+  border: 0 !important;
+  border-top: 1px solid #444444 !important;
+  color: #444444 !important;
+  background-color: transparent !important;
+  margin: 6px 0 !important;
+  opacity: 1 !important;
+}
+
+/* 9. Red Notice Box at the bottom of Order Modal */
+#orderModal .alert-danger,
+body.theme-dark #orderModal .alert-danger,
+.receipt-modal-notice {
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #fca5a5 !important;
+  margin: 12px 15px 15px 15px !important;
+  padding: 10px 12px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  border-radius: 4px !important;
+  line-height: 1.4 !important;
+}
+
+#orderModal .alert-danger *,
+body.theme-dark #orderModal .alert-danger *,
+.receipt-modal-notice * {
+  color: #991b1b !important;
+  background-color: transparent !important;
+}
+
+@media print {
+  html,
+  body,
+  body.theme-dark,
+  #invoice-pos,
+  #viewTransaction,
+  .modal-content,
+  .receipt-sheet,
+  #printable_report_area {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  body.theme-dark * {
+    background-color: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* =====================================================================
+   11. REPORT CENTER & DASHBOARD PROFIT OVERRIDES
+   ===================================================================== */
+body.theme-dark .reports-menu .list-group-item {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark .reports-menu .list-group-item:hover {
+  background-color: var(--bg-hover) !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .reports-menu .list-group-item.active,
+body.theme-dark .reports-menu .list-group-item.active:hover {
+  background-color: #2563eb !important;
+  border-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .report-toolbar {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .report-kpi-card {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.theme-dark .report-kpi-title {
+  color: #94a3b8 !important;
+}
+
+body.theme-dark .report-kpi-val {
+  color: #f8fafc !important;
+}
+
+body.theme-dark .report-kpi-sub {
+  color: #cbd5e1 !important;
+}
+
+body.theme-dark #dash_profit_section .enterprise-card {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+}
+
+body.theme-dark #dash_profit_section text {
+  fill: #cbd5e1 !important;
+}
+
+body.theme-dark #dash_profit_section line {
+  stroke: #334155 !important;
+}
+
+body.theme-dark .empty-cart-message small,
+body.theme-dark .empty-cart-message .empty-cart-hint {
+  color: #94a3b8 !important;
+}

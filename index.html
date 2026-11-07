@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Multi Medicos - Pharmacy Management System</title>
+    <link href="assets/dist/css/bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/enterprise.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dark-theme.css" rel="stylesheet" type="text/css" />
+    <script>
+      (function() {
+        try {
+          const Store = require('electron-store');
+          const store = new Store();
+          if (store.get('theme') === 'dark') {
+            document.documentElement.classList.add('theme-dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+</head>
+
+<body>
+    <div class="splash loading">
+        <img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" style="width:360px;height:72px;max-width:80vw;object-fit:cover;object-position:center;" />
+        <h1 class="pull-right pt-3"><i class="fa fa-spinner fa-spin"></i> Please wait...</h1>
+    </div>
+    <div id="login">
+        <div class="login-box">
+            <div id="load" class="login-box-body">
+                <center><img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" style="width:200px;height:40px;object-fit:cover;object-position:center;" /></center>
+                <form id="account">
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" name="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-default">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="main_app">
+        <nav class="enterprise-nav">
+            <div class="enterprise-brand">
+                <img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" />
+            </div>
+            <div class="enterprise-menu">
+                <button class="nav-tab active" data-view="pos"><i class="fa fa-shopping-cart"></i> Point of Sale</button>
+                <button class="nav-tab" data-view="dashboard"><i class="fa fa-tachometer"></i> Dashboard</button>
+                <button class="nav-tab" data-view="purchases"><i class="fa fa-truck"></i> Purchases</button>
+                <button class="nav-tab" data-view="suppliers"><i class="fa fa-building"></i> Suppliers</button>
+                <button class="nav-tab" data-view="customers_khata"><i class="fa fa-book"></i> Customer Khata</button>
+                <button class="nav-tab" data-view="expenses"><i class="fa fa-file-text-o"></i> Expenses</button>
+                <button class="nav-tab" data-view="reports"><i class="fa fa-bar-chart"></i> Reports</button>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row top-action-bar">
+                <div class="col-md-6">
+                    <div class="button-list pull-left m-l-10">
+                        <div class="btn-group p_one">
+                            <button id="productModal" data-toggle="modal" data-target="#Products" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="  glyphicon glyphicon-barcode"></i> </span> Products
+                            </button>
+                            <button id="newProductModal" data-toggle="modal" data-target="#newProduct" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group p_two">
+                            <button id="categoryModal" data-toggle="modal" data-target="#Categories" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="glyphicon glyphicon-th"></i> </span> Categories
+                            </button>
+                            <button id="newCategoryModal" data-toggle="modal" data-target="#newCategory" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button" class="btn btn-info waves-effect waves-light">
+                            <span class="btn-label"><i class="fa fa-shopping-basket"></i> </span> Open Tabs
+                        </button>
+                        <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()" class="btn btn-info waves-effect waves-light">
+                            <span class="btn-label"><i class="fa fa-shopping-cart"></i></span> Orders
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="button-list pull-right">
+                        <button id="settings" data-toggle="modal" data-target="#settingsModal" type="button" class="btn btn-success waves-effect waves-light p_five">
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </button>
+                        <button id="transactions" type="button" class="btn btn-success waves-effect waves-light p_three">
+                            <span class="btn-label"><i class="  glyphicon glyphicon-credit-card"></i> </span>
+                            Transactions
+                        </button>
+                        <button id="pointofsale" type="button" class="btn btn-success waves-effect waves-light">
+                            <span class="btn-label"><i class="  glyphicon glyphicon-shopping-cart"></i> </span> Point of
+                            Sale
+                        </button>
+                        <div class="btn-group p_four">
+                            <button id="usersModal" data-toggle="modal" data-target="#Users" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="  glyphicon glyphicon-user"></i> </span> Users
+                            </button>
+                            <button id="add-user" data-toggle="modal" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <button type="button" title="My Profile" class="btn btn-default waves-effect waves-light" id="cashier">
+                            <span class="btn-label"><i class="glyphicon glyphicon-user"></i> </span> <span id="loggedin-user"></span>
+                        </button>
+                        <button id="theme-toggle" type="button" title="Toggle Light/Dark Theme" class="btn btn-default waves-effect waves-light">
+                            <i id="theme-icon" class="fa fa-moon-o"></i>
+                        </button>
+                        <button id="log-out" type="button" class="btn btn-warning waves-effect waves-light">
+                            <i class="glyphicon glyphicon-log-out"></i> <span>Log out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="transactions_view">
+                <div class="container">
+                    <div class="row text-center m-t-20" id="totals">
+                        <div id="total_sales" class="col-md-3 py-2 bg-success">
+                            <h5>SALES</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_transactions" class="col-md-3 py-2 bg-warning">
+                            <h5>TRANSACTIONS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_items" class="col-md-3 py-2 bg-info">
+                            <h5>ITEMS SOLD</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_products" class="col-md-3 py-2 bg-success">
+                            <h5>PRODUCTS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                    </div>
+                    <div class="row p-t-10 p-b-10 bg-white m-t-10 m-b-20">
+                        <h3 class="col-md-2">Transactions</h3>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="till-addon">Till</span>
+                                <select id="tills" class="form-control" aria-describedby="till-addon">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="cashier-addon">Cashier</span>
+                                <select id="users" class="form-control" aria-describedby="cashier-addon">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="status-addon">Status</span>
+                                <select id="status" class="form-control" aria-describedby="">
+                                    <option value="1">Completed Sales</option>
+                                    <option value="0">Held Orders</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="date-addon">Date</span>
+                                <div id="reportrange">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <span></span>&nbsp;<i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 bg-white" id="productSales">
+                            <div class="card-box">
+                                <div class="card-title">
+                                    <h4>Products</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table tablesaw-enhanced table-responsive" id="productsSold">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Sold</th>
+                                                <th>Available</th>
+                                                <th>Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="product_sales"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8" id="transactionDetails">
+                            <div class="card-box">
+                                <div class="card-title">
+                                    <h4>Transaction Details</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped table-bordered table-responsive" id="transactionList">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice</th>
+                                                <th>Date</th>
+                                                <th>Customer</th>
+                                                <th>Total</th>
+                                                <th>Paid</th>
+                                                <th>Due</th>
+                                                <th>Change</th>
+                                                <th>Method</th>
+                                                <th>Till</th>
+                                                <th>Cashier</th>
+                                                <th>View</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transaction_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="pos_view">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-box" id="card-box">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <select name="" id="customer" class="form-control">
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" class="btn btn-success" title="New Customer"><i class="fa fa-plus"></i></button>
+                                                <button id="editCustomerModal" class="btn btn-warning" title="Edit Customer"><i class="fa fa-pencil"></i></button>
+                                            </span>
+                                        </div>
+                                        <div id="customer_khata_badge" style="display:none;"></div>
+                                    </div>
+                                    <div class="col-md-12 m-t-5">
+                                        <form action="" id="searchBarCode">
+                                            <div class="input-group">
+                                                <input type="text" required id="skuCode" name="skuCode" class="form-control number-input" placeholder="Scan barcode or type the number then hit enter" aria-label="barcode" aria-describedby="basic-addon2">
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-default search-barcode-btn"><i class="glyphicon glyphicon-ok"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row p-t-10" id="cartTable">
+                                    <div class="card-box">
+                                        <div class="card-title">
+                                            <div class="row">
+                                                <div class="col-md-1"><strong>#</strong></div>
+                                                <div class="col-md-3"><strong>Item</strong></div>
+                                                <div class="col-md-3"><strong>Qty</strong></div>
+                                                <div class="col-md-3"><strong>Price</strong></div>
+                                                <div class="col-md-1"><button onclick="$(this).cancelOrder()" class="btn btn-light btn-xs"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="pos-summary-card">
+                                <div class="row pos-summary-row">
+                                    <div class="col-xs-3 summary-item">
+                                        <span class="summary-label">Items</span>
+                                        <span class="summary-value" id="total">0</span>
+                                    </div>
+                                    <div class="col-xs-3 summary-item">
+                                        <span class="summary-label">Subtotal</span>
+                                        <span class="summary-value" id="price">0.00</span>
+                                    </div>
+                                    <div class="col-xs-3 summary-item pos-discount-item">
+                                        <span class="summary-label">Discount %</span>
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control input-sm" type="number" id="inputDiscount" min="0" max="100" step="any" placeholder="0" oninput="$(this).calculateCart();">
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                        <small id="discountRupeeLabel" class="discount-rupee-preview text-muted">= PKR 0.00</small>
+                                    </div>
+                                    <div class="col-xs-3 summary-item total-summary-item">
+                                        <span class="summary-label">Gross Total</span>
+                                        <span class="summary-total-value" id="gross_price">0.00</span>
+                                        <small class="tax-info-tag">Tax <span id="taxInfo">0</span>%</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pos-action-buttons pull-right">
+                                <button onclick="$(this).submitDueOrder(3);" type="button" class="btn btn-pos-print waves-effect" title="Print Receipt">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                                <button onclick="$(this).cancelOrder()" type="button" class="btn btn-pos-cancel waves-effect waves-light">
+                                    <i class="fa fa-ban"></i> Cancel
+                                </button>
+                                <button type="button" id="hold" class="btn btn-pos-hold waves-effect waves-light">
+                                    <i class="fa fa-hand-paper-o"></i> Hold
+                                </button>
+                                <button type="button" id="payButton" class="btn btn-pos-pay waves-effect waves-light">
+                                    <i class="fa fa-check-circle"></i> Pay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Search product by name or sku">
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="categories" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="parent" class="product-cards-grid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ENTERPRISE VIEWS -->
+            <!-- ========================================== -->
+
+            <!-- DASHBOARD VIEW -->
+            <div id="dashboard_view" class="enterprise-view">
+                <div class="metrics-grid">
+                    <div class="metric-card warning-card">
+                        <h6>Customer Receivables (Khata)</h6>
+                        <div class="metric-value text-warning" id="dash_receivables">PKR 0.00</div>
+                        <div class="metric-sub">Total credit owed by customers</div>
+                    </div>
+                    <div class="metric-card danger-card">
+                        <h6>Supplier Payables</h6>
+                        <div class="metric-value text-danger" id="dash_payables">PKR 0.00</div>
+                        <div class="metric-sub">Outstanding distributor balances</div>
+                    </div>
+                    <div class="metric-card success-card">
+                                    <h6>Cash in Till</h6>
+                        <div class="metric-value text-success" id="dash_cash">PKR 0.00</div>
+                        <div class="metric-sub">Current physical drawer balance</div>
+                    </div>
+                    <div class="metric-card info-card">
+                        <h6>Today's Collections</h6>
+                        <div class="metric-value text-info" id="dash_collections">PKR 0.00</div>
+                        <div class="metric-sub">Cash sales & khata collected today</div>
+                    </div>
+                    <div class="metric-card">
+                        <h6>Today's Supplier Payments</h6>
+                        <div class="metric-value" id="dash_supplier_payments">PKR 0.00</div>
+                        <div class="metric-sub">Payments made to suppliers today</div>
+                    </div>
+                    <div class="metric-card warning-card">
+                        <h6>Today's Expenses</h6>
+                        <div class="metric-value text-warning" id="dash_expenses">PKR 0.00</div>
+                        <div class="metric-sub">Operating expenditures today</div>
+                    </div>
+                    <div class="metric-card danger-card">
+                        <h6>Overdue Invoices</h6>
+                        <div class="metric-value text-danger" id="dash_overdue">0</div>
+                        <div class="metric-sub">Invoices past supplier due date</div>
+                    </div>
+                </div>
+
+                <!-- FINANCIAL PERFORMANCE / PROFIT SECTION (Owner/Authorized only) -->
+                <div id="dash_profit_section" style="margin-top: 25px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                        <h4 style="margin:0; font-weight:700;"><i class="fa fa-line-chart text-success"></i> Financial Performance &amp; Profit</h4>
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_dash_view_pnl"><i class="fa fa-file-text-o"></i> View Full P&amp;L Report</button>
+                    </div>
+
+                    <!-- This Month Summary Row -->
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-3 col-sm-6 m-b-10">
+                            <div class="enterprise-card p-15" style="border-left: 4px solid #3b82f6;">
+                                <div class="text-muted" style="font-size:12px; font-weight:600;">THIS MONTH SALES</div>
+                                <div id="dash_month_sales" style="font-size:20px; font-weight:700; color:var(--text-primary); margin:6px 0;">PKR 0.00</div>
+                                <div id="dash_month_sales_sub" style="font-size:11px;" class="text-muted">vs prev month: <span id="dash_month_sales_change">—</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 m-b-10">
+                            <div class="enterprise-card p-15" style="border-left: 4px solid #10b981;">
+                                <div class="text-muted" style="font-size:12px; font-weight:600;">GROSS PROFIT</div>
+                                <div id="dash_month_gross_profit" style="font-size:20px; font-weight:700; color:var(--text-primary); margin:6px 0;">PKR 0.00</div>
+                                <div id="dash_month_gp_sub" style="font-size:11px;" class="text-muted">vs prev month: <span id="dash_month_gp_change">—</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 m-b-10">
+                            <div class="enterprise-card p-15" style="border-left: 4px solid #f59e0b;">
+                                <div class="text-muted" style="font-size:12px; font-weight:600;">EXPENSES</div>
+                                <div id="dash_month_expenses" style="font-size:20px; font-weight:700; color:var(--text-primary); margin:6px 0;">PKR 0.00</div>
+                                <div id="dash_month_exp_sub" style="font-size:11px;" class="text-muted">vs prev month: <span id="dash_month_exp_change">—</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 m-b-10">
+                            <div class="enterprise-card p-15" id="dash_card_net_profit" style="border-left: 4px solid #06b6d4;">
+                                <div class="text-muted" style="font-size:12px; font-weight:600;">NET PROFIT</div>
+                                <div id="dash_month_net_profit" style="font-size:20px; font-weight:700; margin:6px 0;">PKR 0.00</div>
+                                <div id="dash_month_np_sub" style="font-size:11px;" class="text-muted">vs prev month: <span id="dash_month_np_change">—</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note if sales have unknown cost -->
+                    <div id="dash_month_unknown_note" class="alert alert-info" style="display:none; padding:8px 12px; margin-bottom:15px; font-size:12px;"></div>
+
+                    <!-- Last 12 Months Chart and Table Card -->
+                    <div class="enterprise-card">
+                        <div class="card-header-flex" style="flex-wrap:wrap; gap:10px;">
+                            <h4 style="margin:0; font-weight:700;"><i class="fa fa-bar-chart"></i> Last 12 Months Performance</h4>
+                            <div style="font-size:12px; display:flex; gap:15px; align-items:center;">
+                                <span><span style="display:inline-block; width:12px; height:12px; background:#3b82f6; border-radius:2px; margin-right:4px;"></span>Sales</span>
+                                <span><span style="display:inline-block; width:12px; height:12px; background:#f59e0b; border-radius:2px; margin-right:4px;"></span>Expenses</span>
+                                <span><span style="display:inline-block; width:12px; height:12px; background:#10b981; border-radius:2px; margin-right:4px;"></span>Net Profit</span>
+                            </div>
+                        </div>
+                        <!-- Grouped Bar Chart SVG Container -->
+                        <div id="dash_chart_container" style="width:100%; height:240px; margin:15px 0 20px 0; overflow-x:auto;">
+                            <svg id="dash_svg_chart" width="100%" height="100%" viewBox="0 0 900 240" preserveAspectRatio="none"></svg>
+                        </div>
+
+                        <!-- 12-Month Table -->
+                        <div class="table-responsive">
+                            <table class="enterprise-table" id="dash_12m_table">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Sales</th>
+                                        <th>COGS</th>
+                                        <th>Gross Profit</th>
+                                        <th>Expenses</th>
+                                        <th>Net Profit</th>
+                                        <th>Profit Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash_12m_tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUPPLIERS VIEW -->
+            <div id="suppliers_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-building text-success"></i> Supplier Management</h3>
+                        <button class="btn btn-success" id="btn_add_supplier"><i class="fa fa-plus"></i> Add Supplier</button>
+                    </div>
+                    <div class="toolbar-flex">
+                        <div class="search-input-group">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="supplier_search" class="form-control" placeholder="Search supplier by name, contact, phone..." />
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Company & Contact</th>
+                                    <th>Phone / Email</th>
+                                    <th>Terms</th>
+                                    <th>Outstanding Payable</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suppliers_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PURCHASES VIEW -->
+            <div id="purchases_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-truck text-success"></i> Medicine Purchases</h3>
+                        <button class="btn btn-success" id="btn_new_purchase"><i class="fa fa-plus"></i> New Purchase</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Supplier</th>
+                                    <th>Invoice Date</th>
+                                    <th>Status</th>
+                                    <th>Payment</th>
+                                    <th>Total</th>
+                                    <th>Outstanding</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="purchases_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMERS KHATA VIEW -->
+            <div id="customers_khata_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-book text-success"></i> Customer Khata / Udhaar</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Phone</th>
+                                    <th>Credit Limit</th>
+                                    <th>Current Receivable</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="khata_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPENSES VIEW -->
+            <div id="expenses_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-file-text-o text-success"></i> Operating Expenses</h3>
+                        <button class="btn btn-success" id="btn_add_expense"><i class="fa fa-plus"></i> Add Expense</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Recorded By</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTS VIEW / REPORT CENTER -->
+            <div id="reports_view" class="enterprise-view">
+                <div class="row">
+                    <!-- Left Report Tabs Navigation -->
+                    <div class="col-md-3 col-sm-4">
+                        <div class="enterprise-card" style="padding: 10px;">
+                            <h5 style="margin: 8px 10px 12px; font-weight: 700; color: var(--text-primary);"><i class="fa fa-folder-open text-success"></i> Report Center</h5>
+                            <div class="list-group reports-menu" id="reports_menu" style="margin-bottom:0;">
+                                <a href="#" class="list-group-item active" data-report="pnl"><i class="fa fa-line-chart m-r-5 text-success"></i> Profit &amp; Loss</a>
+                                <a href="#" class="list-group-item" data-report="sales"><i class="fa fa-shopping-cart m-r-5 text-primary"></i> Sales Report</a>
+                                <a href="#" class="list-group-item" data-report="expenses"><i class="fa fa-money m-r-5 text-warning"></i> Expense Report</a>
+                                <a href="#" class="list-group-item" data-report="stock_valuation"><i class="fa fa-calculator m-r-5 text-info"></i> Stock Valuation</a>
+                                <a href="#" class="list-group-item" data-report="expiry"><i class="fa fa-calendar-times-o m-r-5 text-danger"></i> Expiry Report</a>
+                                <a href="#" class="list-group-item" data-report="low_stock"><i class="fa fa-exclamation-triangle m-r-5 text-warning"></i> Low Stock &amp; Reorder</a>
+                                <a href="#" class="list-group-item" data-report="product_movement"><i class="fa fa-arrows-h m-r-5 text-primary"></i> Top / Dead Stock</a>
+                                <a href="#" class="list-group-item" data-report="purchases"><i class="fa fa-truck m-r-5 text-success"></i> Purchases Report</a>
+                                <a href="#" class="list-group-item" data-report="payables_aging"><i class="fa fa-clock-o m-r-5 text-danger"></i> Payables &amp; Khata Aging</a>
+                                <a href="#" class="list-group-item" data-report="daily_closing"><i class="fa fa-check-circle m-r-5 text-info"></i> Daily Closing</a>
+                                <a href="#" class="list-group-item" data-report="inventory"><i class="fa fa-table m-r-5 text-muted"></i> Inventory Stock (Original)</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Report Content Area -->
+                    <div class="col-md-9 col-sm-8">
+                        <div class="enterprise-card">
+                            <div class="card-header-flex" style="flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <h3 id="active_report_title" style="margin: 0;"><i class="fa fa-bar-chart text-success"></i> Profit &amp; Loss Report</h3>
+                                    <div id="active_report_subtitle" style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;">Period: All to All</div>
+                                </div>
+                                <div class="report-actions" style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-default" id="btn_export_report_csv"><i class="fa fa-file-excel-o text-success"></i> Export CSV</button>
+                                    <button class="btn btn-sm btn-default" id="btn_print_report"><i class="fa fa-print"></i> Print</button>
+                                </div>
+                            </div>
+
+                            <!-- Common Filter Toolbar -->
+                            <div class="toolbar-flex report-toolbar" id="report_toolbar" style="margin: 12px 0 16px; padding: 10px; background: var(--bg-surface-2, #f8fafc); border-radius: 6px; border: 1px solid var(--border-color, #e2e8f0); display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                                <div class="btn-group btn-group-sm" id="rep_date_presets">
+                                    <button type="button" class="btn btn-default active" data-range="this_month">This Month</button>
+                                    <button type="button" class="btn btn-default" data-range="last_month">Last Month</button>
+                                    <button type="button" class="btn btn-default" data-range="today">Today</button>
+                                    <button type="button" class="btn btn-default" data-range="this_week">This Week (Mon - Sun)</button>
+                                    <button type="button" class="btn btn-default" data-range="custom">Custom</button>
+                                </div>
+                                <div id="rep_custom_date_inputs" style="display: flex; gap: 6px; align-items: center;">
+                                    <label id="rep_date_from_label" class="m-r-5 text-muted" style="display:none; font-size:12px;">Date:</label>
+                                    <input type="text" id="rep_date_from" class="form-control input-sm" style="width: 110px;" placeholder="YYYY-MM-DD">
+                                    <span id="rep_date_sep" class="text-muted">to</span>
+                                    <input type="text" id="rep_date_to" class="form-control input-sm" style="width: 110px;" placeholder="YYYY-MM-DD">
+                                </div>
+                                <div id="rep_extra_filters" style="display: flex; gap: 8px; align-items: center;"></div>
+                                <button type="button" class="btn btn-sm btn-success" id="btn_apply_report_filter"><i class="fa fa-filter"></i> Apply Filter</button>
+                            </div>
+
+                            <!-- Report Summary Row -->
+                            <div id="report_summary_container" style="margin-bottom: 16px;"></div>
+
+                            <!-- Printable Report Container -->
+                            <div id="printable_report_area">
+                                <div id="print_report_header" style="display: none; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                                    <h3 style="margin: 0; color: var(--text-primary);" id="print_header_store">Multi Medicos</h3>
+                                    <h4 style="margin: 4px 0 0; color: var(--text-secondary);" id="print_header_report_name">Profit &amp; Loss Report</h4>
+                                    <div style="font-size: 12px; color: var(--text-muted);" id="print_header_period">Period: All</div>
+                                </div>
+                                <div class="table-responsive">
+                                    <div id="report_table_wrapper">
+                                        <table class="enterprise-table" id="active_report_table">
+                                            <thead id="active_report_thead"></thead>
+                                            <tbody id="active_report_tbody"></tbody>
+                                        </table>
+                                        <!-- Original Inventory table body anchor for backward compatibility -->
+                                        <table class="enterprise-table" id="table_original_inventory" style="display:none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Barcode</th>
+                                                    <th>Medicine Name</th>
+                                                    <th>Supplier</th>
+                                                    <th>Expiry Date</th>
+                                                    <th>Current Stock</th>
+                                                    <th>Selling Price</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="rep_inventory_tbody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div id="report_empty_state" class="text-center text-muted p-20" style="display: none;">
+                                        <i class="fa fa-inbox fa-3x" style="opacity: 0.4; margin-bottom: 8px;"></i>
+                                        <p>No records found for the selected period.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dueModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Hold Order
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <input type="text" id="refNumber" placeholder="Enter a reference" class="form-control">
+                        </form>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="1" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="2" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="3" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="4" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="5" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="6" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="7" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="8" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="9" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">9</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="del" class="btn btn-warning btn-lg btn-block">⌫</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="0" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="ac" data-isdue="true" class="btn btn-danger btn-lg btn-block keypad-btn">AC</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="$(this).submitDueOrder(0);" class="btn btn-primary btn-block btn-lg waves-effect waves-light">Hold Order</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!--  Modal content for the above example -->
+        <div id="paymentModel" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Payment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="list-group">
+                                    <a href="javascript:void(0)" id="cash" data-payment-method="Cash" data-payment-type="1" class="list-group-item active">
+                                        Cash
+                                    </a>
+                                    <a href="javascript:void(0)" id="card" data-payment-method="Card" data-payment-type="3" class="list-group-item">Card</a>
+                                    <a href="javascript:void(0)" id="creditPaymentBtn" data-payment-method="Credit / Khata" data-payment-type="4" class="list-group-item"><i class="fa fa-book text-warning"></i> Credit / Khata</a>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3">Price <span id="price_curr"></span></span>
+                                    <input id="payablePrice" readonly type="text" class="form-control" aria-describedby="basic-addon3">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3">Payment <span id="payment_curr"></span> </span>
+                                    <input type="text" placeholder="0.0" class="form-control" id="paymentText" aria-describedby="basic-addon3" readonly>
+                                    <input type="hidden" class="form-control" id="payment" aria-describedby="basic-addon3">
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="1" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="2" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="3" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="4" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="5" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="6" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="7" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="8" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="9" data-isdue="false" class="btn btn-success btn-outline-success btn-lg btn-block keypad-btn">9</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="del" class="btn btn-danger btn-lg btn-block keypad-btn">⌫</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="0" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="." data-isdue="false" class="btn btn-warning btn-lg btn-block">.</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button data-val="ac" data-isdue="false" class="btn btn-danger btn-block btn-lg keypad-btn">AC</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="input-group" id="cardInfo">
+                                    <span class="input-group-addon" id="basic-addon3">Card Info </span>
+                                    <input type="text" class="form-control" id="paymentInfo" aria-describedby="basic-addon3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="btn btn-primary btn-block btn-lg waves-effect waves-light">Change <span id="change_curr"></span><span id="change"></span> </div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" id="confirmPayment" class="btn btn-success btn-block btn-lg waves-effect waves-light">Confirm
+                                Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="newCustomer" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="customerModalTitle">New Customer
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCustomer" data-parsley-validate>
+                            <input type="hidden" id="customer_id" name="_id">
+                            <div class="form-group">
+                                <label for="userName">Customer Name*</label>
+                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter name" class="form-control" id="userName">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Phone</label>
+                                <input type="text" name="phone" parsley-trigger="change" placeholder="Enter Phone number" class="form-control" id="phoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Email</label>
+                                <input type="email" name="email" parsley-trigger="change" placeholder="Enter email address" class="form-control" id="emailAddress">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Address</label>
+                                <input type="text" name="address" parsley-trigger="change" placeholder="Enter address" class="form-control" id="userAddress">
+                            </div>
+                            <input id="saveCustomerBtn" type="submit" value="Save Customer" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel"><i class="fa fa-medkit"></i> Product
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveProduct" encType="multipart/form-data">
+                            <input type="hidden" name="id" id="product_id">
+                            <input type="hidden" name="img" id="img">
+                            <input type="hidden" name="remove" id="remove_img">
+                            <input type="hidden" name="base_unit" id="product_base_unit_hidden" value="">
+
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <div class="input-group">
+                                    <select name="category" class="form-control" id="category"></select>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" id="btn_main_add_cat" title="Add new category">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label for="productName">Product Name <span class="text-danger">*</span></label>
+                                    <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter a product name" class="form-control" id="productName">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="barcode">BarCode / SKU</label>
+                                    <input type="text" required="required" name="barcode" parsley-trigger="change" placeholder="Enter product barcode" class="form-control number-input" id="barcode">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label for="supplier">Supplier</label>
+                                    <input type="text" name="supplier" placeholder="Enter supplier name" class="form-control" id="supplier">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="expirationDate">Expiry Date</label>
+                                    <input type="text" name="expirationDate" parsley-trigger="change" placeholder="dd/mm/yyyy" class="form-control" id="expirationDate" readonly>
+                                </div>
+                            </div>
+
+                            <!-- How is it sold? segmented radio -->
+                            <div class="form-group">
+                                <label style="font-weight: 600; margin-bottom: 6px; display: block;">How is it sold?</label>
+                                <div class="btn-group btn-group-justified sold-type-toggle" data-toggle="buttons">
+                                    <label class="btn btn-default active" id="prod_sold_type_single_lbl">
+                                        <input type="radio" name="prod_sold_type" id="prod_sold_type_single" value="single" checked>
+                                        <i class="fa fa-tag"></i> Single item
+                                    </label>
+                                    <label class="btn btn-default" id="prod_sold_type_pack_lbl">
+                                        <input type="radio" name="prod_sold_type" id="prod_sold_type_pack" value="pack">
+                                        <i class="fa fa-cubes"></i> In strips / boxes
+                                    </label>
+                                </div>
+                                <small class="text-muted" style="display:block; margin-top:4px;">
+                                    Choose single item for syrups, injections, bottles or loose items. Choose strips / boxes for blister packs.
+                                </small>
+                            </div>
+
+                            <!-- Single item unit selector -->
+                            <div id="prod_single_unit_group" class="form-group">
+                                <label for="prod_single_unit">Item Unit</label>
+                                <div class="row">
+                                    <div class="col-xs-7">
+                                        <select id="prod_single_unit" class="form-control">
+                                            <option value="Bottle">Bottle</option>
+                                            <option value="Injection">Injection</option>
+                                            <option value="Piece" selected>Piece</option>
+                                            <option value="Sachet">Sachet</option>
+                                            <option value="Tube">Tube</option>
+                                            <option value="Syrup">Syrup</option>
+                                            <option value="Drops">Drops</option>
+                                            <option value="Cream">Cream</option>
+                                            <option value="custom">Other / Custom...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-5" id="prod_single_unit_custom_wrap" style="display: none;">
+                                        <input type="text" id="prod_single_unit_custom" class="form-control" placeholder="Unit name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pack sizes section -->
+                            <div id="prod_pack_section" style="display: none;">
+                                <div class="panel panel-default" style="margin-bottom: 15px; border-radius: 4px;">
+                                    <div class="panel-body" style="padding: 12px;">
+                                        <div id="pack_edit_notice" class="alert alert-info" style="display: none; font-size: 11px; padding: 8px 10px; margin-bottom: 10px;">
+                                            <i class="fa fa-info-circle"></i> <strong>Notice:</strong> Changing pack sizes applies to future entries and updates current stock display. Historical purchase and sales records remain unchanged.
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="product_base_unit">Base Unit Name (Individual tablet/capsule)</label>
+                                            <div class="row">
+                                                <div class="col-xs-7">
+                                                    <select name="base_unit_select" class="form-control" id="product_base_unit">
+                                                        <option value="Tablet" selected>Tablet</option>
+                                                        <option value="Capsule">Capsule</option>
+                                                        <option value="Sachet">Sachet</option>
+                                                        <option value="Piece">Piece</option>
+                                                        <option value="custom">Other / Custom...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-5" id="product_base_unit_custom_wrap" style="display:none;">
+                                                    <input type="text" id="product_base_unit_custom" class="form-control" placeholder="Unit name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-4 form-group">
+                                                <label for="product_units_per_strip">Units / Strip</label>
+                                                <input type="number" min="2" step="1" name="units_per_strip" id="product_units_per_strip" class="form-control" placeholder="e.g. 10">
+                                            </div>
+                                            <div class="col-xs-4 form-group">
+                                                <label for="product_strips_per_box">Strips / Box</label>
+                                                <input type="number" min="1" step="1" id="product_strips_per_box" class="form-control" placeholder="e.g. 10">
+                                            </div>
+                                            <div class="col-xs-4 form-group">
+                                                <label for="product_units_per_box">Units / Box</label>
+                                                <input type="number" min="2" step="1" name="units_per_box" id="product_units_per_box" class="form-control" placeholder="e.g. 100">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-5">
+                                            <label for="product_default_sale_unit">Default Sale Unit</label>
+                                            <select name="default_sale_unit" id="product_default_sale_unit" class="form-control">
+                                                <option value="base">Base Unit</option>
+                                                <option value="strip">Strip</option>
+                                                <option value="box">Box</option>
+                                            </select>
+                                        </div>
+                                        <div id="product_pack_preview" class="alert alert-success" style="font-size: 11px; padding: 6px 10px; margin-top: 8px; margin-bottom: 0; display: none;">
+                                            <i class="fa fa-calculator"></i> <span id="product_pack_preview_text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pricing Section -->
+                            <div class="form-group">
+                                <label for="product_price" id="label_product_price">Price of 1 Item (PKR) <span class="text-danger">*</span></label>
+                                <input type="text" required="required" name="price" placeholder="0.00" class="form-control number-input" id="product_price">
+                            </div>
+
+                            <div id="prod_pack_prices_row" class="row" style="display: none;">
+                                <div class="col-xs-6 form-group">
+                                    <label for="product_strip_price">
+                                        Price of 1 Strip (PKR)
+                                        <a href="javascript:void(0)" class="pull-right btn-reset-auto" id="btn_prod_reset_strip_price" style="display:none; font-size:11px; font-weight:normal;" title="Reset to auto-calculated price"><i class="fa fa-undo"></i> Reset to auto</a>
+                                    </label>
+                                    <input type="number" min="0" step="0.01" name="strip_price" id="product_strip_price" class="form-control" placeholder="0.00">
+                                    <small class="text-muted prod-strip-calc-hint" style="font-size:10px; display:none;"></small>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="product_box_price">
+                                        Price of 1 Box (PKR)
+                                        <a href="javascript:void(0)" class="pull-right btn-reset-auto" id="btn_prod_reset_box_price" style="display:none; font-size:11px; font-weight:normal;" title="Reset to auto-calculated price"><i class="fa fa-undo"></i> Reset to auto</a>
+                                    </label>
+                                    <input type="number" min="0" step="0.01" name="box_price" id="product_box_price" class="form-control" placeholder="0.00">
+                                    <small class="text-muted prod-box-calc-hint" style="font-size:10px; display:none;"></small>
+                                </div>
+                            </div>
+
+                            <div class="help-block text-muted" style="font-size: 11px; margin-top: -3px; margin-bottom: 12px;">
+                                <i class="fa fa-info-circle"></i> Cost price is entered in the purchase line, with its unit.
+                            </div>
+
+                            <div class="form-group" id="group_stock_quantity">
+                                <label for="quantity_input">Stock</label>
+                                <div class="input-group" id="stock_input_group">
+                                    <input type="number" name="quantity_input" placeholder="Available stock" class="form-control" id="quantity_input" min="0">
+                                    <span class="input-group-btn" id="stock_unit_btn_wrap" style="display:none;">
+                                        <select id="opening_stock_unit" class="form-control" style="width: auto;">
+                                            <option value="base">Base</option>
+                                            <option value="strip">Strip</option>
+                                            <option value="box">Box</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <input type="hidden" name="quantity" id="quantity" value="0">
+                                <div id="stock_pack_preview" class="text-info m-t-5" style="display:none; font-size:12px; font-weight:600;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Minimum Stock</label>
+                                <input type="number" name="minStock" placeholder="Minimum Stock" class="form-control" id="minStock" min="1" value="10">
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" name="stock" id="stock"> Disable stock check </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="imagename"><span id="rmv_img" class="btn btn-xs btn-warning">Remove</span>
+                                Picture </label>
+                                <div id="current_img"></div>
+                                <input type="file" name="imagename" id="imagename">
+                            </div>
+                            <button type="button" id="btnEditBatches" class="btn btn-info btn-block m-b-10" style="display:none;">
+                                <i class="fa fa-calendar"></i> Manage Batches & Correct Expiry
+                            </button>
+                            <input type="submit" id="submitProduct" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Category
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCategory">
+                            <div class="form-group">
+                                <label for="userName">Name</label>
+                                <input id="category_id" type="hidden" name="id">
+                                <input id="categoryName" type="text" required="required" name="name" placeholder="Enter a category name" class="form-control">
+                            </div>
+                            <input type="submit" id="submitCategory" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Products
+                        </h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-40" id="all_products">
+                        <table class="table table-bordered" id="productList">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Item</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Expiry Date</th>
+                                    <th>Category</th>
+                                    <th>Supplier</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="batchesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="batchesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="batchesModalLabel">Medicine Batches & Expiry - <span id="batchModalProductTitle" style="color:#2563eb;"></span></h4>
+                    </div>
+                    <div class="modal-body p-20">
+                        <input type="hidden" id="batchModalProductId" value="">
+                        <!-- Inline Edit Form (Hidden by default) -->
+                        <div id="batchEditSection" class="well" style="display:none; background:#f8fafc; border:1px solid #cbd5e1; margin-bottom:15px; border-radius:6px; padding:15px;">
+                            <h5 style="margin-top:0; font-weight:700;"><i class="fa fa-edit"></i> Edit Batch Expiry / Number</h5>
+                            <form id="formEditBatch" class="form-inline">
+                                <input type="hidden" id="editBatchId" value="">
+                                <div class="form-group m-r-10">
+                                    <label for="editBatchNumber" class="m-r-5">Batch No:</label>
+                                    <input type="text" id="editBatchNumber" class="form-control input-sm" required style="width:140px;">
+                                </div>
+                                <div class="form-group m-r-10">
+                                    <label for="editBatchExpiry" class="m-r-5">Expiry Date:</label>
+                                    <input type="text" id="editBatchExpiry" class="form-control input-sm" placeholder="YYYY-MM-DD" required style="width:140px;">
+                                </div>
+                                <div class="form-group m-r-10" id="groupEditBatchCost">
+                                    <label for="editBatchCost" class="m-r-5">Cost (PKR):</label>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" min="0.01" id="editBatchCost" class="form-control input-sm" placeholder="0.00" style="width:90px;">
+                                        <span class="input-group-btn">
+                                            <select id="editBatchCostUnit" class="form-control input-sm" style="width:auto;">
+                                                <option value="base">Per Unit</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <small id="editBatchCostPreview" class="text-info m-l-5" style="display:none; font-weight:600;"></small>
+                                </div>
+                                <button type="submit" id="btnSaveBatch" class="btn btn-sm btn-success"><i class="fa fa-check"></i> Save Batch</button>
+                                <button type="button" id="btnCancelBatchEdit" class="btn btn-sm btn-default m-l-5">Cancel</button>
+                                <div id="batchEditWarning" class="text-danger m-t-5" style="display:none; font-size:12px;"></div>
+                            </form>
+                        </div>
+                        <table class="table table-bordered table-striped" id="batchesTable">
+                            <thead>
+                                <tr>
+                                    <th>Batch Number</th>
+                                    <th>Expiry Date</th>
+                                    <th>Available Stock</th>
+                                    <th>Initial Stock</th>
+                                    <th>Unit Cost</th>
+                                    <th>Supplier</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batchesTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Users" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Users
+                        </h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-20" id="all_userss">
+                        <table class="table table-bordered" id="userList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Categories" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Categories
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" id="categoryList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="category_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Account Infomarion
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveUser" data-parsley-validate>
+                            <input type="hidden" name="id" id="user_id">
+                            <div class="form-group">
+                                <label for="userName">Name*</label>
+                                <input type="text" required="required" name="fullname" parsley-trigger="change" placeholder="Enter name" class="form-control" id="fullname">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Username*</label>
+                                <input type="text" name="username" parsley-trigger="change" placeholder="Login Username" class="form-control" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Password</label>
+                                <input type="password" name="password" parsley-trigger="change" placeholder="Password" class="form-control" id="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Repeat Password</label>
+                                <input type="password" name="pass" parsley-trigger="change" placeholder="Repeat" class="form-control" id="pass">
+                            </div>
+                            <div class="perms">
+                                <h3 class="m-t-20">Permissions</h3>
+                                <hr>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Manage
+                                    Products and Stock </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Manage
+                                    Product Categories </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> View
+                                    Transactions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Manage Users and
+                                    Permissions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Manage
+                                    Settings </span>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="holdOrdersModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Open Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdOrderInput" placeholder="Search order by reference" class="holdOrderInput form-control">
+                        <div class="holdOrderKeyboard"></div>
+                        <br>
+                        <div class="row" id="renderHoldOrders">
+                            <p>Please wait <span class="dot"></span> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="customerModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Customer Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdCustomerOrderInput" placeholder="Search order by customer name" class="holdCustomerOrderInput form-control">
+                        <div class="customerOrderKeyboard"></div>
+                        <br>
+                        <div class="row" id="renderCustomerOrders">
+                            <p>please wait <span class="dot"></span> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="orderModal" class="modal fade bs-example-modal-sm receipt-modal-wrapper" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content receipt-modal-content receipt-sheet">
+                    <div class="modal-header receipt-modal-header">
+                        <button class="btn btn-sm btn-success btn-receipt-print" onclick="$(this).print()">Print</button> <button type="button" class="close receipt-modal-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body receipt-modal-body receipt-sheet" id="viewTransaction">
+                    </div>
+                    <div class="alert alert-danger receipt-modal-notice">Right-Click and Reload if you get stuck after cancelling a print.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="settingsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Settings
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="app">Application</label>
+                                    <select name="app" id="app" class="form-control">
+                                        <option value="Standalone Point of Sale">Standalone Point of Sale</option>
+                                        <option value="Network Point of Sale Terminal">Network Point of Sale Terminal</option>
+                                        <option value="Network Point of Sale Server">Network Point of Sale Server</option>
+                                    </select>
+                                </div>
+                                <form id="net_settings_form">
+                                    <div class="form-group">
+                                        <label for="ip">Server IP Address*</label>
+                                        <input type="text" required="required" placeholder="Enter the IP address of the admin computer." name="ip" class="form-control" id="ip">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="till">Till Number*</label>
+                                            <input type="text" required="required" placeholder="Enter a number" name="till" class="form-control" id="till">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label for="mac">Hardware Identification Number </label>
+                                            <input type="text" required="required" name="mac" class="form-control" id="mac" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                    </div>
+                                </form>
+                            </div>
+                            <form id="settings_form" encType="multipart/form-data">
+                                <input type="hidden" name="id" id="settings_id">
+                                <input type="hidden" name="img" id="logo_img" value="multi-medicos-logo.png">
+                                <input type="hidden" name="remove" id="remove_logo">
+                                <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userName">Store Name</label>
+                                            <input type="text" required="required" name="store" class="form-control" id="store" placeholder="Pharmacy name" value="Multi Medicos">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Address Line 1</label>
+                                            <input type="text" required="required" name="address_one" class="form-control" id="address_one" placeholder="Address" value="GreenTown">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Address Line 2</label>
+                                            <input type="text" required="required" name="address_two" class="form-control" id="address_two" placeholder="City" value="Karachi">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Contact Number</label>
+                                            <input type="tel" name="contact" class="form-control" id="contact" placeholder="Contact number" value="03196573297">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Vat Number</label>
+                                            <input type="text" name="tax" parsley-trigger="change" class="form-control number-input" id="tax">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userName">Currency Symbol</label>
+                                            <input type="text" required="required" name="symbol" class="form-control" id="symbol" minlength="1" maxlength="3" placeholder="PKR" value="PKR">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Vat Percentage</label>
+                                            <div class="pull-left">
+                                                <div class="col-md-6">
+                                                    <div class="input-group" style="width:130%">
+                                                        <input type="number" min="0" max="100" required="required" name="percentage" class="form-control" id="percentage" value="0">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" name="charge_tax" id="charge_tax"> Charge
+                                            Vat</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" name="quick_billing" id="quick_billing"> Quick Billing (skip payment confirmation)</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName"><span id="rmv_logo" class="btn btn-xs btn-warning">Remove</span> Logo </label>
+                                            <div id="current_logo"></div>
+                                            <input type="file" name="imagename" id="logoname" accept=".jpg,.jpeg,.png,.webp">
+                                            <small class="text-gray">
+                                            Max filesize: <strong>2MB</strong>; Allowed image types:<strong> jpeg, jpg, png or webp</strong></small>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Receipt Footer</label>
+                                            <textarea name="footer" class="form-control" id="footer">Thank you for shopping at Multi Medicos.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ========================================== -->
+        <!-- ENTERPRISE MODALS -->
+        <!-- ========================================== -->
+
+        <!-- MODAL: ADD / EDIT SUPPLIER -->
+        <div id="modal_supplier" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_supplier">
+                        <input type="hidden" id="supplier_id_input" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="modal_supplier_title">Add Supplier</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Supplier Name <span class="text-danger">*</span></label>
+                                <input type="text" id="supplier_name_input" class="form-control" required placeholder="e.g. ABC Pharma Distributor" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" id="supplier_phone_input" class="form-control" placeholder="e.g. 0300 1234567" autocomplete="tel" />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Address <small class="text-muted">(Optional)</small></label>
+                                    <input type="text" id="supplier_address_input" class="form-control" placeholder="Shop, office or warehouse address" />
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="supplier_status_input" value="active" />
+                            <button type="button" class="btn btn-link supplier-advanced-toggle collapsed" data-toggle="collapse" data-target="#supplier_additional_details" aria-expanded="false">
+                                <i class="fa fa-chevron-right"></i> Additional Details
+                            </button>
+                            <div id="supplier_additional_details" class="collapse supplier-additional-details">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Contact Person</label>
+                                        <input type="text" id="supplier_contact_input" class="form-control" placeholder="e.g. Tariq Mehmood" />
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="supplier_email_input" class="form-control" placeholder="Optional email address" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Payment Terms</label>
+                                        <input type="text" id="supplier_terms_input" class="form-control" value="Net 30" />
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Due Period (Days)</label>
+                                        <input type="number" id="supplier_due_days_input" class="form-control" value="30" min="0" step="1" />
+                                    </div>
+                                </div>
+                                <div class="form-group" id="supplier_opening_balance_group">
+                                    <label class="simple-check-label">
+                                        <input type="checkbox" id="supplier_opening_balance_confirm" />
+                                        Add a previous balance we already owe this supplier
+                                    </label>
+                                    <div id="supplier_opening_balance_fields" class="m-t-10" style="display:none;">
+                                        <label>Previous Opening Balance (PKR)</label>
+                                        <input type="number" step="0.01" min="0" id="supplier_opening_balance_input" class="form-control" placeholder="0.00" disabled />
+                                        <small class="text-muted">Only use this for debt from before Multi Medicos. It will create an accounting opening balance.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea id="supplier_notes_input" class="form-control" rows="2" placeholder="Optional notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save Supplier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: SUPPLIER STATEMENT -->
+        <div id="modal_supplier_statement" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-file-text-o"></i> Supplier Account Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="stmt_filter_id" />
+                        <div class="statement-header">
+                            <div>
+                                <div class="statement-title" id="stmt_supplier_name">-</div>
+                                <div class="text-muted">Phone: <span id="stmt_supplier_phone">-</span></div>
+                            </div>
+                            <div class="statement-balance-box">
+                                <small>Current Outstanding Payable</small>
+                                <h4 id="stmt_supplier_balance">PKR 0.00</h4>
+                            </div>
+                        </div>
+                        <div class="row m-b-15">
+                            <div class="col-md-4">
+                                <input type="date" id="stmt_start_date" class="form-control input-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" id="stmt_end_date" class="form-control input-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" id="btn_filter_statement" class="btn btn-sm btn-info btn-block"><i class="fa fa-filter"></i> Filter Date</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="enterprise-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Ref #</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Debit (Paid)</th>
+                                        <th class="text-right">Credit (Purchased)</th>
+                                        <th class="text-right">Running Payable</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stmt_table_body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: SUPPLIER PAYMENT -->
+        <div id="modal_supplier_payment" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="form_supplier_payment">
+                        <input type="hidden" id="pay_supplier_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-money"></i> Record Supplier Payment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Supplier: <strong id="pay_supplier_name">-</strong></h4>
+                                    <p class="text-muted">Total Payable: <strong id="pay_supplier_balance" class="text-danger">PKR 0.00</strong></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Payment Amount (PKR) <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.01" min="0.01" id="pay_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Payment Method</label>
+                                    <select id="pay_method_select" class="form-control">
+                                        <option value="cash">Cash (Updates Cashbook)</option>
+                                        <option value="bank">Bank Transfer</option>
+                                        <option value="easypaisa">Easypaisa</option>
+                                        <option value="jazzcash">JazzCash</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Reference # / Cheque #</label>
+                                    <input type="text" id="pay_ref_input" class="form-control" placeholder="e.g. Bank Ref / Cheque #" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Notes</label>
+                                    <input type="text" id="pay_notes_input" class="form-control" placeholder="Payment description" />
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>Allocate to Unpaid Purchase Invoices (Optional)</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            <th>Invoice #</th>
+                                            <th>Date</th>
+                                            <th>Total</th>
+                                            <th>Outstanding</th>
+                                            <th>Allocate Amount (PKR)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pay_invoices_tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Post Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: NEW PURCHASE -->
+        <div id="modal_new_purchase" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg purchase-modal-dialog">
+                <div class="modal-content">
+                    <form id="form_new_purchase">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-truck"></i> New Medicine Purchase</h4>
+                        </div>
+                        <div class="modal-body purchase-modal-body">
+                            <section class="purchase-section">
+                                <div class="purchase-section-heading"><span>1</span><div><strong>Purchase Information</strong><small>Who supplied these medicines?</small></div></div>
+                                <div class="row">
+                                    <div class="col-md-5 form-group">
+                                        <label>Supplier <span class="text-danger">*</span></label>
+                                        <div class="purchase-search-control" id="purchase_supplier_picker">
+                                            <input type="hidden" id="pur_supplier_select" />
+                                            <input type="text" id="pur_supplier_search" class="form-control" placeholder="Type supplier name or phone" autocomplete="off" />
+                                            <div id="pur_supplier_results" class="purchase-search-results" role="listbox"></div>
+                                        </div>
+                                        <button type="button" class="btn btn-link btn-xs purchase-inline-action" id="btn_purchase_add_supplier"><i class="fa fa-plus"></i> Add Supplier</button>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Invoice Number</label>
+                                        <div class="input-group">
+                                            <input type="text" id="pur_invoice_no" class="form-control" placeholder="Supplier invoice or internal reference" />
+                                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="btn_generate_purchase_ref" title="Generate internal reference">Generate</button></span>
+                                        </div>
+                                        <small class="text-muted">Use Generate when the supplier has no invoice number.</small>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Purchase Date</label>
+                                        <input type="date" id="pur_date_input" class="form-control" required />
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="purchase-section">
+                                <div class="purchase-section-heading"><span>2</span><div><strong>Medicines</strong><small>Add each billed medicine and its batch details.</small></div></div>
+                                <div class="purchase-medicine-toolbar">
+                                    <div class="purchase-search-control purchase-medicine-search">
+                                        <input type="text" id="pur_medicine_search" class="form-control input-lg" placeholder="Search medicine name, category or SKU" autocomplete="off" />
+                                        <div id="pur_medicine_results" class="purchase-search-results" role="listbox"></div>
+                                    </div>
+                                    <button type="button" class="btn btn-default" id="btn_quick_add_medicine"><i class="fa fa-plus"></i> Add New Medicine</button>
+                                </div>
+                                <div id="purchase_items_empty" class="purchase-empty-state">
+                                    <i class="fa fa-medkit"></i>
+                                    <strong>No medicines added yet</strong>
+                                    <span>Search above and select a medicine.</span>
+                                </div>
+                                <div id="purchase_items_cards"></div>
+                                <button type="button" class="btn btn-link purchase-add-another" id="btn_add_purchase_row"><i class="fa fa-plus-circle"></i> Add Another Medicine</button>
+                            </section>
+
+                            <div class="row purchase-lower-grid">
+                                <div class="col-md-7">
+                                    <section class="purchase-section purchase-payment-section">
+                                        <div class="purchase-section-heading"><span>3</span><div><strong>Payment</strong><small>How much are you paying now?</small></div></div>
+                                        <div class="row">
+                                            <div class="col-sm-5 form-group">
+                                                <label>Payment Status</label>
+                                                <select id="pur_payment_mode" class="form-control">
+                                                    <option value="fully_paid">Fully Paid</option>
+                                                    <option value="partial">Partially Paid</option>
+                                                    <option value="unpaid">Unpaid / Udhaar</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4 form-group" id="pur_paid_now_group" style="display:none;">
+                                                <label>Amount Paid (PKR)</label>
+                                                <input type="number" step="0.01" min="0" id="pur_paid_now" class="form-control" placeholder="0.00" />
+                                            </div>
+                                            <div class="col-sm-3 form-group">
+                                                <label>Method</label>
+                                                <select id="pur_pay_method" class="form-control">
+                                                    <option value="cash">Cash</option>
+                                                    <option value="bank">Bank</option>
+                                                    <option value="easypaisa">Easypaisa</option>
+                                                    <option value="jazzcash">JazzCash</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Stock Posting</label>
+                                            <select id="pur_receiving_mode" class="form-control">
+                                                <option value="received">Receive into stock now</option>
+                                                <option value="draft">Save as draft — stock will not change</option>
+                                            </select>
+                                            <small class="text-muted">Received purchases update batches, stock and supplier accounts exactly once.</small>
+                                        </div>
+                                        <button type="button" class="btn btn-link supplier-advanced-toggle collapsed" data-toggle="collapse" data-target="#purchase_additional_details" aria-expanded="false">
+                                            <i class="fa fa-chevron-right"></i> Additional Details
+                                        </button>
+                                        <div id="purchase_additional_details" class="collapse supplier-additional-details">
+                                            <div class="row">
+                                                <div class="col-sm-5 form-group">
+                                                    <label>Payment Due Date</label>
+                                                    <input type="date" id="pur_due_date_input" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-7 form-group">
+                                                    <label>Notes</label>
+                                                    <input type="text" id="pur_notes" class="form-control" placeholder="Optional notes" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-5">
+                                    <section class="purchase-section purchase-summary-section">
+                                        <div class="purchase-section-heading"><span>4</span><div><strong>Summary</strong><small>Calculated from billed quantities only.</small></div></div>
+                                        <div class="purchase-summary-row"><span>Purchase Total</span><strong>PKR <span id="pur_grand_total">0.00</span></strong></div>
+                                        <div class="purchase-summary-row"><span>Amount Paid</span><strong class="text-success">PKR <span id="pur_summary_paid">0.00</span></strong></div>
+                                        <div class="purchase-summary-row purchase-summary-balance"><span>Remaining Balance</span><strong>PKR <span id="pur_summary_remaining">0.00</span></strong></div>
+                                        <small>Bonus quantity increases stock but does not increase this invoice total.</small>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success btn-lg" id="btn_save_purchase"><i class="fa fa-save"></i> Save Purchase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: QUICK ADD MEDICINE FROM PURCHASE -->
+        <div id="modal_quick_medicine" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_quick_medicine">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-medkit"></i> Add New Medicine</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="quick_med_cost_price" value="">
+                            <div class="form-group">
+                                <label for="quick_med_name">Medicine Name <span class="text-danger">*</span></label>
+                                <input type="text" id="quick_med_name" class="form-control input-lg" required placeholder="e.g. Panadol 500mg" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label for="quick_med_category">Category <small class="text-muted">(Optional)</small></label>
+                                    <div class="input-group">
+                                        <select id="quick_med_category" class="form-control"></select>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" id="btn_quick_add_cat" title="Add new category">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="quick_med_sku">SKU / BarCode <small class="text-muted">(Optional)</small></label>
+                                    <input type="text" id="quick_med_sku" class="form-control" inputmode="numeric" placeholder="Auto-generated if blank" />
+                                </div>
+                            </div>
+
+                            <!-- How is it sold? segmented radio -->
+                            <div class="form-group">
+                                <label style="font-weight: 600; margin-bottom: 6px; display: block;">How is it sold?</label>
+                                <div class="btn-group btn-group-justified sold-type-toggle" data-toggle="buttons">
+                                    <label class="btn btn-default active" id="quick_sold_type_single_lbl">
+                                        <input type="radio" name="quick_sold_type" id="quick_sold_type_single" value="single" checked>
+                                        <i class="fa fa-tag"></i> Single item
+                                    </label>
+                                    <label class="btn btn-default" id="quick_sold_type_pack_lbl">
+                                        <input type="radio" name="quick_sold_type" id="quick_sold_type_pack" value="pack">
+                                        <i class="fa fa-cubes"></i> In strips / boxes
+                                    </label>
+                                </div>
+                                <small class="text-muted" style="display:block; margin-top:4px;">
+                                    Choose single item for syrups, injections, bottles or loose items. Choose strips / boxes for blister packs.
+                                </small>
+                            </div>
+
+                            <!-- Single item unit selector -->
+                            <div id="quick_single_unit_group" class="form-group">
+                                <label for="quick_single_unit">Item Unit</label>
+                                <div class="row">
+                                    <div class="col-xs-7">
+                                        <select id="quick_single_unit" class="form-control">
+                                            <option value="Bottle">Bottle</option>
+                                            <option value="Injection">Injection</option>
+                                            <option value="Piece" selected>Piece</option>
+                                            <option value="Sachet">Sachet</option>
+                                            <option value="Tube">Tube</option>
+                                            <option value="Syrup">Syrup</option>
+                                            <option value="Drops">Drops</option>
+                                            <option value="Cream">Cream</option>
+                                            <option value="custom">Other / Custom...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-5" id="quick_single_unit_custom_wrap" style="display: none;">
+                                        <input type="text" id="quick_single_unit_custom" class="form-control" placeholder="Unit name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pack sizes section in Quick Add -->
+                            <div id="quick_pack_section" style="display: none;">
+                                <div class="panel panel-default" style="margin-bottom: 12px; border-radius: 4px;">
+                                    <div class="panel-body" style="padding: 10px;">
+                                        <div class="form-group">
+                                            <label for="quick_base_unit">Base Unit Name (Individual tablet/capsule)</label>
+                                            <div class="row">
+                                                <div class="col-xs-7">
+                                                    <select id="quick_base_unit" class="form-control input-sm">
+                                                        <option value="Tablet" selected>Tablet</option>
+                                                        <option value="Capsule">Capsule</option>
+                                                        <option value="Sachet">Sachet</option>
+                                                        <option value="Piece">Piece</option>
+                                                        <option value="custom">Other / Custom...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-5" id="quick_base_unit_custom_wrap" style="display:none;">
+                                                    <input type="text" id="quick_base_unit_custom" class="form-control input-sm" placeholder="Unit name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-4 form-group">
+                                                <label for="quick_units_per_strip">Units / Strip</label>
+                                                <input type="number" min="2" step="1" id="quick_units_per_strip" class="form-control input-sm" placeholder="e.g. 10">
+                                            </div>
+                                            <div class="col-xs-4 form-group">
+                                                <label for="quick_strips_per_box">Strips / Box</label>
+                                                <input type="number" min="1" step="1" id="quick_strips_per_box" class="form-control input-sm" placeholder="e.g. 10">
+                                            </div>
+                                            <div class="col-xs-4 form-group">
+                                                <label for="quick_units_per_box">Units / Box</label>
+                                                <input type="number" min="2" step="1" id="quick_units_per_box" class="form-control input-sm" placeholder="e.g. 100">
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-5">
+                                            <label for="quick_default_sale_unit">Default Sale Unit</label>
+                                            <select id="quick_default_sale_unit" class="form-control input-sm">
+                                                <option value="base">Base Unit</option>
+                                                <option value="strip">Strip</option>
+                                                <option value="box">Box</option>
+                                            </select>
+                                        </div>
+                                        <div id="quick_pack_preview" class="alert alert-success" style="font-size: 11px; padding: 6px 10px; margin-top: 8px; margin-bottom: 0; display: none;">
+                                            <i class="fa fa-calculator"></i> <span id="quick_pack_preview_text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pricing Section -->
+                            <div class="form-group">
+                                <label for="quick_med_selling_price" id="lbl_quick_med_selling_price">Price of 1 Item (PKR) <span class="text-danger">*</span></label>
+                                <input type="number" id="quick_med_selling_price" class="form-control" min="0" step="0.01" required placeholder="0.00" />
+                            </div>
+
+                            <div id="quick_pack_prices_row" class="row" style="display: none;">
+                                <div class="col-xs-6 form-group">
+                                    <label for="quick_strip_price">
+                                        Price of 1 Strip (PKR)
+                                        <a href="javascript:void(0)" class="pull-right btn-reset-auto" id="btn_quick_reset_strip_price" style="display:none; font-size:11px; font-weight:normal;" title="Reset to auto-calculated price"><i class="fa fa-undo"></i> Reset to auto</a>
+                                    </label>
+                                    <input type="number" min="0" step="0.01" id="quick_strip_price" class="form-control input-sm" placeholder="0.00">
+                                    <small class="text-muted quick-strip-calc-hint" style="font-size:10px; display:none;"></small>
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="quick_box_price">
+                                        Price of 1 Box (PKR)
+                                        <a href="javascript:void(0)" class="pull-right btn-reset-auto" id="btn_quick_reset_box_price" style="display:none; font-size:11px; font-weight:normal;" title="Reset to auto-calculated price"><i class="fa fa-undo"></i> Reset to auto</a>
+                                    </label>
+                                    <input type="number" min="0" step="0.01" id="quick_box_price" class="form-control input-sm" placeholder="0.00">
+                                    <small class="text-muted quick-box-calc-hint" style="font-size:10px; display:none;"></small>
+                                </div>
+                            </div>
+
+                            <div class="help-block text-muted" style="font-size: 11px; margin-top: -3px; margin-bottom: 10px;">
+                                <i class="fa fa-info-circle"></i> Cost price is entered in the purchase line, with its unit.
+                            </div>
+
+                            <div class="quick-medicine-note"><i class="fa fa-info-circle"></i> Stock remains zero until this purchase is received. Enter batch and expiry on the purchase item.</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="btn_save_quick_medicine"><i class="fa fa-save"></i> Save Medicine</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: VIEW PURCHASE DETAILS -->
+        <div id="modal_view_purchase" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Purchase Details: <span id="vpur_invoice_no"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-b-15">
+                            <div class="col-md-4">
+                                <p>Supplier: <strong id="vpur_supplier"></strong></p>
+                                <p>Invoice Date: <strong id="vpur_date"></strong></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Status: <span id="vpur_status" class="badge-status badge-received"></span></p>
+                                <p>Payment: <span id="vpur_payment_status" class="badge-status badge-paid"></span></p>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <p>Total: <strong id="vpur_total"></strong></p>
+                                <p>Paid: <span id="vpur_paid" class="text-success"></span></p>
+                                <p>Outstanding: <strong id="vpur_outstanding" class="text-danger"></strong></p>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Product</th>
+                                    <th>Batch #</th>
+                                    <th>Expiry</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Cost</th>
+                                    <th>Discount %</th>
+                                    <th>Line Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vpur_items_tbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: PURCHASE RETURN -->
+        <div id="modal_purchase_return" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_purchase_return">
+                        <input type="hidden" id="pret_purchase_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-reply"></i> Return Items to Supplier</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Invoice: <strong id="pret_invoice_no"></strong> | Supplier: <strong id="pret_supplier"></strong></p>
+                            <div class="form-group">
+                                <label>Select Medicine Item to Return <span class="text-danger">*</span></label>
+                                <select id="pret_item_select" class="form-control" required></select>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7 form-group">
+                                    <label>Return Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" min="1" id="pret_qty_input" class="form-control" required placeholder="Qty" />
+                                </div>
+                                <div class="col-xs-5 form-group" id="pret_unit_wrap" style="display:none;">
+                                    <label>Unit</label>
+                                    <select id="pret_unit_select" class="form-control"></select>
+                                </div>
+                            </div>
+                            <small id="pret_max_preview" class="text-info m-b-10" style="display:none; font-weight:600;"></small>
+                            <div class="form-group">
+                                <label>Reason for Return</label>
+                                <textarea id="pret_reason_input" class="form-control" rows="2" placeholder="e.g. Damaged packing, near expiry, recall"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-warning"><i class="fa fa-reply"></i> Post Purchase Return</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: CUSTOMER STATEMENT -->
+        <div id="modal_customer_statement" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-book"></i> Customer Khata Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="cstmt_filter_id" />
+                        <div class="statement-header">
+                            <div>
+                                <div class="statement-title" id="cstmt_name">-</div>
+                                <div class="text-muted">Phone: <span id="cstmt_phone">-</span></div>
+                            </div>
+                            <div class="statement-balance-box">
+                                <small>Current Customer Receivable</small>
+                                <h4 id="cstmt_balance" class="text-danger">PKR 0.00</h4>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="enterprise-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Ref #</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Debit (Credit Sale)</th>
+                                        <th class="text-right">Credit (Payment)</th>
+                                        <th class="text-right">Running Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cstmt_table_body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: CUSTOMER PAYMENT (KHATA COLLECTION) -->
+        <div id="modal_customer_payment" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_customer_payment">
+                        <input type="hidden" id="cpay_cust_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-money"></i> Collect Customer Khata Payment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Customer: <strong id="cpay_cust_name">-</strong></h4>
+                            <p>Current Balance: <strong id="cpay_cust_balance" class="text-danger">PKR 0.00</strong></p>
+                            <div class="form-group">
+                                <label>Payment Amount Received (PKR) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0.01" id="cpay_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select id="cpay_method_select" class="form-control">
+                                    <option value="cash">Cash (Adds to Cashbook)</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="easypaisa">Easypaisa</option>
+                                    <option value="jazzcash">JazzCash</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Reference #</label>
+                                <input type="text" id="cpay_ref_input" class="form-control" placeholder="Transaction or Receipt #" />
+                            </div>
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <input type="text" id="cpay_notes_input" class="form-control" placeholder="Payment remarks" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Record Collection</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: ADD EXPENSE -->
+        <div id="modal_add_expense" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_add_expense">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-file-text-o"></i> Record Operating Expense</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Expense Category <span class="text-danger">*</span></label>
+                                <select id="exp_category_select" class="form-control" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount (PKR) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0.01" id="exp_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Payment Method</label>
+                                    <select id="exp_method_select" class="form-control">
+                                        <option value="cash">Cash (Deducts from Cashbook)</option>
+                                        <option value="bank">Bank</option>
+                                        <option value="easypaisa">Easypaisa</option>
+                                        <option value="jazzcash">JazzCash</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Expense Date</label>
+                                    <input type="date" id="exp_date_input" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <input type="text" id="exp_desc_input" class="form-control" required placeholder="e.g. September electricity bill, shop tea/refreshment" />
+                            </div>
+                            <div class="form-group">
+                                <label>Reference # / Bill #</label>
+                                <input type="text" id="exp_ref_input" class="form-control" placeholder="Optional bill or invoice #" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save Expense</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/dist/js/bundle.min.js"></script>
+    <script>
+        // Failsafe to dismiss splash screen if still visible after assets load
+        setTimeout(function () {
+            if (window.$) {
+                $('.splash, .loading').fadeOut(300);
+            } else {
+                var splash = document.querySelector('.splash');
+                if (splash) splash.style.display = 'none';
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>
